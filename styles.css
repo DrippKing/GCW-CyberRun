@@ -1,0 +1,362 @@
+/* Fuente futurista */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap');
+
+body {
+  margin: 0;
+  font-family: 'Orbitron', sans-serif;
+  background: url('Imagen Menu-GraficasWeb.png') no-repeat center center fixed; 
+  background-size: cover;
+  color: #00ffe0;
+  overflow: hidden;
+  height: 100vh;
+  position: relative;
+}
+
+
+.pantalla {
+  display: none;
+  text-align: center;
+}
+
+.pantalla.activa {
+  display: block;
+}
+
+/* Animación tipo arcade flotante suave y continua *************************************************************************************************/
+@keyframes flotar {
+  0% {
+    transform: translateY(0px) scale(1);
+  }
+  50% {
+    transform: translateY(-10px) scale(1.05);
+  }
+  100% {
+    transform: translateY(0px) scale(1);
+  }
+}
+
+
+.titulo-juego {
+  font-size: 5.5rem;
+  color: #00ffe0;
+  text-shadow: 0 0 20px #00ffe0, 0 0 40px #0080ff;
+  margin-bottom: 212px;
+  position: relative;
+  top: -100px; /* sube el título */
+ animation: flotar 3s ease-in-out infinite alternate;
+}
+
+.contenedor {
+  position: absolute;
+  top: 5%; /* ajusta según necesites */
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  width: 100%;
+}
+
+
+/* Menú del Juego***************************************************************************************************************************/
+.menu {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+}
+
+/* Botones*/
+.btn {
+  width: 200px;
+  padding: 12px;
+  font-size: 1rem;
+  font-family: inherit;
+  color: #0f0f0f;
+  background: linear-gradient(90deg, #00ffe0, #0080ff);
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+  box-shadow: 0 0 10px #00ffe0;
+}
+
+.btn:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 20px #00ffe0, 0 0 40px #0080ff;
+}
+
+.btn.salir {
+  background: linear-gradient(90deg, #ff0040, #ff8000);
+  box-shadow: 0 0 10px #ff0040;
+}
+
+.btn.salir:hover {
+  box-shadow: 0 0 20px #ff0040, 0 0 40px #ff8000;
+}
+
+
+/* Contenedor de Opciones************************************************************************************************** */
+.menu-opciones {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.85);
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 0 20px #00ffe0, 0 0 40px #0080ff;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  color: #00ffe0;
+  text-align: left;
+  min-width: 300px;
+}
+
+.menu-opciones h2 {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.menu-opciones .opcion {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.menu-opciones input[type="range"] {
+  width: 100%;
+}
+
+/* Contenedor de Ranking***********************************************************************************************************/
+.menu-ranking {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(15, 15, 15, 0.9);
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 0 20px #00ffe0, 0 0 40px #0080ff;
+  width: 350px;
+  text-align: center;
+}
+
+.menu-ranking h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  text-shadow: 0 0 10px #00ffe0;
+}
+
+.menu-ranking ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 20px 0;
+  font-size: 1.2rem;
+  text-align: left;
+}
+
+.menu-ranking li {
+  padding: 5px 0;
+  border-bottom: 1px solid #00ffe0;
+}
+/* Contenedor de Tienda *****************************************************************************************************************************/
+.menu-tienda {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(15, 15, 15, 0.95);
+  padding: 30px; /* más padding */
+  border-radius: 15px;
+  box-shadow: 0 0 20px #00ffe0, 0 0 40px #0080ff;
+  width: 500px; /* contenedor más grande */
+  height: 600px; 
+  overflow: hidden;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Título y datos */
+.menu-tienda h2 {
+  margin-bottom: 10px;
+  font-size: 2rem;
+  text-shadow: 0 0 10px #00ffe0;
+}
+
+.datos-total {
+  margin-bottom: 15px;
+  font-size: 1.2rem;
+}
+
+/* Lista de perks con scroll */
+.lista-perks {
+  flex: 3;
+  overflow-y: auto;
+  padding-right: 20px;
+  margin-bottom: 35px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+}
+
+/* Cada perk: tamaño controlado */
+.lista-perks .perk {
+  width: 220px; 
+  height: 100px; 
+  padding: 10px;
+  background: rgba(0, 255, 224, 0.1);
+  border: 2px solid #00ffe0;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; 
+  transition: transform 0.2s, box-shadow 0.2s;
+  flex-shrink: 0; 
+}
+
+.perk:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px #00ffe0, 0 0 30px #0080ff;
+}
+
+/* Imagen circular dentro del perk */
+.imagen-perk {
+  width: 60px; 
+  height: 60px;
+  margin-bottom: 8px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid #00ffe0;
+}
+
+.perk.bloqueado .imagen-perk {
+  border: 3px solid #777;
+}
+
+.perk.bloqueado .candado {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.5rem;
+  color: #777;
+  pointer-events: none;
+}
+
+.perk p {
+  margin: 0;
+  font-size: 1rem;
+  text-align: center;
+}
+
+/* Imagen circular */
+.imagen-perk {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto;
+  border-radius: 50%;
+  overflow: hidden;
+  position: relative;
+  border: 3px solid #00ffe0;
+}
+
+.imagen-perk img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.perk.bloqueado .imagen-perk {
+  border: 3px solid #777;
+}
+
+.perk.bloqueado .candado {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2rem;
+  color: #777;
+  pointer-events: none;
+}
+
+/* Botón regresar*/
+#btn-tienda-regresar {
+  align-self: center; 
+  width: 200px;
+  padding: 12px;
+  font-size: 1rem;
+  font-family: inherit;
+  color: #0f0f0f;
+  background: linear-gradient(90deg, #00ffe0, #0080ff);
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+  box-shadow: 0 0 10px #00ffe0;
+}
+
+#btn-tienda-regresar:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 20px #00ffe0, 0 0 40px #0080ff;
+}
+
+/* Contenedor de info de perk */
+.info-perk {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(15, 15, 15, 0.95);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.info-perk .contenido-info {
+  background: rgba(20, 20, 20, 0.95);
+  padding: 25px;
+  border-radius: 15px;
+  text-align: center;
+  width: 300px;
+  box-shadow: 0 0 20px #00ffe0;
+  position: relative;
+}
+
+.cerrar {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: #fff;
+}
+
+.imagen-perk-grande {
+  width: 100px;
+  height: 100px;
+  margin: 0 auto 15px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid #00ffe0;
+}
+
+.imagen-perk-grande img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+#btn-comprar {
+  margin-top: 15px;
+}
+
+.oculto {
+  display: none;
+}

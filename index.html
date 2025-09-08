@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cyber Run: Escape del Mainframe</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="contenedor-principal">
+    <!-- Música y audios -->
+    <audio id="musica-fondo" loop></audio>
+    <audio id="sonido-boton" src="Button-Sound.mp3"></audio>
+    <audio id="sonido-select" src="Select-button-sound.mp3"></audio>
+
+    <!-- Pantalla de Inicio************************************************************************************** -->
+    <section id="pantalla-inicio" class="pantalla activa">
+      <div class="contenedor">
+        <h1 class="titulo-juego">Cyber Run<br> Escape the Mainframe</h1>
+        <div class="menu">
+          <button class="btn" onclick="cambiarPantalla('juego')">SinglePlayer</button>
+          <button class="btn" onclick="cambiarPantalla('multijugador')">Multiplayer</button>
+          <button class="btn" onclick="abrirTienda()">Tienda</button>
+          <button class="btn" onclick="abrirRanking()">Ranking</button>
+          <button class="btn" onclick="abrirOpciones()">Opciones</button>
+          <button class="btn salir" onclick="cerrarJuego()">Salir</button>
+        </div>
+      </div>
+      <!-- Contenedor de Opciones************************************************************************************** -->
+      <div id="menu-opciones" class="menu-opciones oculto">
+        <h2>Opciones</h2>
+        <div class="opcion">
+          <label for="volumen-musica">Volumen Música:</label>
+          <input type="range" id="volumen-musica" min="0" max="1" step="0.01" value="1">
+        </div>
+        <div class="opcion">
+          <label for="volumen-sonidos">Volumen Efectos:</label>
+          <input type="range" id="volumen-sonidos" min="0" max="1" step="0.01" value="1">
+        </div>
+        <button class="btn" id="btn-regresar">Regresar</button>
+      </div>
+    </section>
+    <!-- Contenedor de Ranking **********************************************************************************************-->
+ <div id="menu-ranking" class="menu-ranking oculto">
+  <h2>Ranking</h2>
+  <ul id="lista-ranking">
+    <li>1. JugadorPro - 15000 pts</li>
+    <li>2. NeoRunner - 12340 pts</li>
+    <li>3. CyberX - 9870 pts</li>
+    <li>4. ByteMaster - 8650 pts</li>
+    <li>5. PixelHero - 7540 pts</li>
+  </ul>
+ <button class="btn" id="btn-ranking-regresar">Regresar</button>
+  </div>
+
+  <!-- Contenedor de Tienda ************************************************************************************************-->
+<div id="menu-tienda" class="menu-tienda oculto">
+  <h2>Tienda de Perks</h2>
+  <p class="datos-total">Datos disponibles: <span id="cantidad-datos">2500</span></p>
+
+  <!-- Lista scrollable de perks -->
+  <div class="lista-perks">
+    <!-- Perk bloqueado -->
+    <div class="perk bloqueado" data-nombre="Salto Extra" data-descripcion="Permite realizar un doble salto." data-precio="500">
+      <div class="imagen-perk">
+        <img src="perk-salto.png" alt="Salto Extra">
+        <div class="candado">🔒</div>
+      </div>
+      <p>Salto Extra</p>
+    </div>
+
+    <!-- Perk desbloqueado -->
+    <div class="perk desbloqueado" data-nombre="Velocidad+" data-descripcion="Aumenta la velocidad de movimiento en un 20%.">
+      <div class="imagen-perk">
+        <img src="perk-velocidad.png" alt="Velocidad+">
+      </div>
+      <p>Velocidad+</p>
+    </div>
+
+    <!-- Otro perk bloqueado -->
+    <div class="perk bloqueado" data-nombre="Escudo Energético" data-descripcion="Absorbe el primer golpe recibido." data-precio="1200">
+      <div class="imagen-perk">
+        <img src="perk-escudo.png" alt="Escudo Energético">
+        <div class="candado">🔒</div>
+      </div>
+      <p>Escudo Energético</p>
+    </div>
+  </div>
+
+  <button class="btn" id="btn-tienda-regresar">Regresar</button>
+</div>
+
+<!-- Contenedor de información de perk -->
+<div id="info-perk" class="info-perk oculto">
+  <div class="contenido-info">
+    <span id="cerrar-info" class="cerrar">✖</span>
+    <div class="imagen-perk-grande">
+      <img id="info-imagen" src="" alt="Perk">
+    </div>
+    <h3 id="info-nombre"></h3>
+    <p id="info-descripcion"></p>
+    <p id="info-precio"></p>
+    <button id="btn-comprar" class="btn oculto">Comprar</button>
+  </div>
+</div>
+
+ <!--Div Final-->
+</div>
+
+  <script src="script.js"></script>
+</body>
+</html>
