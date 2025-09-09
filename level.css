@@ -7,10 +7,21 @@ html, body {
   height: 100%;
   width: 100%;
   font-family: 'Orbitron', sans-serif;
-  background: url('bg.jpg') no-repeat center center fixed;
+/*  background: url('bg.jpg') no-repeat center center fixed;*/
+/*
+  background: url('bg.jpg') repeat-x; /* Se repite horizontalmente */
+ /* animation: moverFondo 10s linear infinite;*/
+
+
+
   background-size: cover;
   color: #00ffe0;
   overflow: hidden;
+}
+
+body {/*animacion no automatica*/
+  background: url('bg.jpg') repeat-x;
+  background-size: cover;
 }
 
 
@@ -92,4 +103,13 @@ html, body {
 /* Oculta menu pausa */
 .oculto {
   display: none;
+}
+
+@keyframes moverFondo {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: -1500px 0; /* el ancho de tu imagen */
+  }
 }
