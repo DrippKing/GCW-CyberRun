@@ -8,6 +8,23 @@ const musicaJuego = document.getElementById("musica-juego");
 
 let juegoPausado = false;
 
+// Contador
+const contadorElement = document.getElementById("contador");
+let contador = 0;
+
+// Función para actualizar el contador
+function actualizarContador() {
+  if (!juegoPausado) {
+    contador++;
+    contadorElement.textContent = contador;
+  }
+}
+
+// Llama a actualizarContador cada segundo (1000)
+setInterval(actualizarContador, 250);
+//cada cuarto de segundo
+
+
 //variables para sonido
 const sonidoHover = document.getElementById("sonido-hover");
 const sonidoClick = document.getElementById("sonido-click");
@@ -79,6 +96,9 @@ btnContinuar.addEventListener("click", continuarJuego);
 
 // simula reinicio recargando la página
 btnReiniciar.addEventListener("click", () => location.reload());
+
+
+
 
 // regresa al menu inicio (redirecciona al index)
 btnMenu.addEventListener("click", () => window.location.href = "index.html");
