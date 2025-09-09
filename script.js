@@ -1,10 +1,82 @@
-//Musica**************************************************************************************************************************************************
-// Selección de audio
-const musica = document.getElementById("musica-fondo");
-musica.src = "Glitch_Reality.mp3"; // Ruta a tu archivo de música
-musica.volume = .9; // Volumen medio
+// =================================================================================================
+// DECLARACIÓN DE VARIABLES
+// =================================================================================================
 
-// Función para iniciar música
+// ------------------------------------- AUDIO -------------------------------------
+// Elemento de audio para la música de fondo
+const musica = document.getElementById("musica-fondo");
+// Elemento de audio para el sonido de hover sobre los botones
+const sonido_btn_Hover = document.getElementById("sonido-btn_Hover");
+// Elemento de audio para el sonido de clic en los botones
+const sonido_btn_Click = document.getElementById("sonido-btn_Click");
+
+
+// ------------------------------------- BOTONES GENERALES -------------------------------------
+// Colección de todos los elementos con la clase '.btn'
+const botones = document.querySelectorAll('.btn');
+
+
+// ------------------------------------- MENÚ DE OPCIONES -------------------------------------
+// Contenedor del menú de opciones
+const menuOpciones = document.getElementById("menu-opciones");
+// Botones del menú principal
+const botonesMenu = document.querySelectorAll(".menu > .btn");
+// Botón para regresar desde el menú de opciones
+const btnRegresar = document.getElementById("btn-regresar");
+// Slider para el volumen de la música
+const sliderMusica = document.getElementById("volumen-musica");
+// Slider para el volumen de los sonidos
+const sliderSonidos = document.getElementById("volumen-sonidos");
+// Slider para el brillo (actualmente no utilizado en la lógica)
+const sliderBrillo = document.getElementById("brillo");
+
+
+// ------------------------------------- MENÚ DE RANKING -------------------------------------
+// Contenedor del menú de ranking
+const menuRanking = document.getElementById("menu-ranking");
+// Botón para regresar desde el menú de ranking
+const btnRankingRegresar = document.getElementById("btn-ranking-regresar");
+
+
+// ------------------------------------- MENÚ DE TIENDA -------------------------------------
+// Contenedor del menú de la tienda
+const menuTienda = document.getElementById("menu-tienda");
+// Botón para regresar desde la tienda
+const btnTiendaRegresar = document.getElementById("btn-tienda-regresar");
+// Colección de todos los perks en la tienda
+const listaPerks = document.querySelectorAll(".perk");
+// Contenedor de la ventana de información del perk
+const infoPerk = document.getElementById("info-perk");
+// Botón para cerrar la ventana de información del perk
+const cerrarInfo = document.getElementById("cerrar-info");
+// Elemento para mostrar el nombre del perk
+const infoNombre = document.getElementById("info-nombre");
+// Elemento para mostrar la descripción del perk
+const infoDescripcion = document.getElementById("info-descripcion");
+// Elemento para mostrar la imagen del perk
+const infoImagen = document.getElementById("info-imagen");
+// Elemento para mostrar el precio del perk
+const infoPrecio = document.getElementById("info-precio");
+// Botón para comprar un perk
+const btnComprar = document.getElementById("btn-comprar");
+// Elemento que muestra la cantidad de "datos" (moneda del juego) del jugador
+const cantidadDatos = document.getElementById("cantidad-datos");
+// Variable para almacenar la moneda del jugador (ejemplo)
+let datosJugador = 2500;
+// Array para almacenar los perks que el jugador ha comprado
+let perksComprados = [];
+
+
+// =================================================================================================
+// LÓGICA DEL SCRIPT
+// =================================================================================================
+
+// ------------------------------------- MÚSICA Y SONIDO -------------------------------------
+musica.src = "Glitch_Reality.mp3"; // Ruta a tu archivo de música
+musica.volume = .01; // Volumen inicial de la música
+sonido_btn_Hover.volume = 0.01; // Volumen inicial de los sonidos de botones
+
+// Función para iniciar música (requiere interacción del usuario)
 function iniciarMusica() {
   if (musica.paused) {
     musica.play().catch(() => {
@@ -17,103 +89,93 @@ function iniciarMusica() {
 window.addEventListener("click", iniciarMusica, { once: true });
 window.addEventListener("keydown", iniciarMusica, { once: true });
 
-
-//*******************************************************************************************************************************************/
-//Audio de los botones
-const sonidoBoton = document.getElementById("sonido-boton");
-
-// Seleccionar todos los botones
-const botones = document.querySelectorAll('.btn');
-
-// Agregar evento hover (mouseenter) a cada botón
+// Agregar evento hover (mouseenter) a cada botón para reproducir sonido
 botones.forEach(btn => {
   btn.addEventListener('mouseenter', () => {
-    // Reiniciar el audio si ya estaba sonando
-    sonidoBoton.currentTime = 0;
-    sonidoBoton.play().catch(() => {
+    sonido_btn_Hover.currentTime = 0;
+    sonido_btn_Hover.play().catch(() => {
       console.log("Interacción requerida para reproducir sonido.");
     });
   });
 });
 
-//************************************************************************************************************************************/
-// Selección del audio de selección
-const sonidoSelect = document.getElementById("sonido-select");
-
-// Agregar evento click a cada botón
+// Agregar evento click a cada botón para reproducir sonido de selección
 botones.forEach(btn => {
-  btn.addEventListener('click', () => {
-    // Reiniciar audio si ya estaba sonando
-    sonidoSelect.currentTime = 0;
-    sonidoSelect.play().catch(() => {
+  btn.addEventListener('mousedown', () => {
+    sonido_btn_Click.currentTime = 0;
+    sonido_btn_Click.play().catch(() => {
       console.log("Interacción requerida para reproducir sonido.");
     });
   });
 });
 
-// Función para cambiar de pantalla (temporal esto aparece cada boton no programado. Una ves Todo tenga su funcion esta parte del codigo debe eliminarse)
+// Reutilizamos audios para los botones de regresar que no están en la colección 'botones'
+btnRegresar.addEventListener('mouseenter', () => {
+  sonido_btn_Hover.currentTime = 0;
+  sonido_btn_Hover.play();
+});
+
+btnRegresar.addEventListener('mouseclick', () => {
+  sonido_btn_Click.currentTime = 0;
+  sonido_btn_Click.play();
+});
+
+
+// ------------------------------------- FUNCIONES GENERALES DE NAVEGACIÓN -------------------------------------
+// Función para cambiar de pantalla (temporal)
 function cambiarPantalla(nombre) {
   alert("Cambiar a pantalla: " + nombre);
 }
 
-// Simulación de cerrar juego 
+// Simulación de cerrar juego
 function cerrarJuego() {
   alert("Gracias por jugar Cyber Run!");
 }
 
-//OPCIONES    *********************************************************************************************************************************************/
-// Contenedores y botones
-const menuOpciones = document.getElementById("menu-opciones");
-const botonesMenu = document.querySelectorAll(".menu > .btn");
-const btnRegresar = document.getElementById("btn-regresar");
 
-// Sliders
-const sliderMusica = document.getElementById("volumen-musica");
-const sliderSonidos = document.getElementById("volumen-sonidos");
-const sliderBrillo = document.getElementById("brillo");
-
+// ------------------------------------- LÓGICA DE OPCIONES -------------------------------------
 // Mostrar menú de opciones
 function abrirOpciones() {
   botonesMenu.forEach(btn => btn.classList.add("oculto"));
   menuOpciones.classList.remove("oculto");
 }
 
-// Regresar al menú principal
+// Regresar al menú principal desde opciones
 btnRegresar.addEventListener("click", () => {
   menuOpciones.classList.add("oculto");
   botonesMenu.forEach(btn => btn.classList.remove("oculto"));
 });
 
-// Ajustar volúmenes
+// Ajustar volumen de música con el slider
 sliderMusica.addEventListener("input", () => {
   musica.volume = parseFloat(sliderMusica.value);
 });
 
+// Ajustar volumen de sonidos con el slider
 sliderSonidos.addEventListener("input", () => {
-  sonidoBoton.volume = parseFloat(sliderSonidos.value);
-  sonidoSelect.volume = parseFloat(sliderSonidos.value);
+  // Se multiplica por 0.1 para que el sonido de hover no sea tan fuerte
+  sonido_btn_Hover.volume = parseFloat(sliderSonidos.value) * 0.1;
+  sonido_btn_Click.volume = parseFloat(sliderSonidos.value);
+});
+// ------------------------------------- LÓGICA DE SELECTOR DE NIVEL -------------------------------------
+//Abrir selector de nivel
+function seleccionarNivel() {
+  document.querySelector(".menu").classList.add("oculto");
+  document.getElementById("titulos").classList.add("oculto");
+  document.getElementById("menu-niveles").classList.remove("oculto");
+}
+//Regresar desde selector de nivel
+document.getElementById("btn-niveles-regresar").addEventListener("click", () => {
+  document.getElementById("menu-niveles").classList.add("oculto");
+  document.querySelector(".menu").classList.remove("oculto");
+  document.getElementById("titulos").classList.remove("oculto");
 });
 
-
-// Reutilizamos audios para los botones
-btnRegresar.addEventListener('mouseenter', () => {
-  sonidoBoton.currentTime = 0;
-  sonidoBoton.play();
-});
-
-btnRegresar.addEventListener('click', () => {
-  sonidoSelect.currentTime = 0;
-  sonidoSelect.play();
-});
-
-//RANKING **************************************************************************************************************************************/
-const menuRanking = document.getElementById("menu-ranking");
-const btnRankingRegresar = document.getElementById("btn-ranking-regresar");
-
+// ------------------------------------- LÓGICA DE RANKING -------------------------------------
 // Abrir Ranking
 function abrirRanking() {
-  document.querySelector(".menu").classList.add("oculto"); // ocultar menú principal
-  menuRanking.classList.remove("oculto"); // mostrar ranking
+  document.querySelector(".menu").classList.add("oculto");
+  menuRanking.classList.remove("oculto");
 }
 
 // Regresar desde Ranking
@@ -122,23 +184,8 @@ btnRankingRegresar.addEventListener("click", () => {
   document.querySelector(".menu").classList.remove("oculto");
 });
 
-// TIENDA ******************************************************************************************************************************************** */
-const menuTienda = document.getElementById("menu-tienda");
-const btnTiendaRegresar = document.getElementById("btn-tienda-regresar");
-const listaPerks = document.querySelectorAll(".perk");
-const infoPerk = document.getElementById("info-perk");
-const cerrarInfo = document.getElementById("cerrar-info");
 
-const infoNombre = document.getElementById("info-nombre");
-const infoDescripcion = document.getElementById("info-descripcion");
-const infoImagen = document.getElementById("info-imagen");
-const infoPrecio = document.getElementById("info-precio");
-const btnComprar = document.getElementById("btn-comprar");
-const cantidadDatos = document.getElementById("cantidad-datos");
-
-let datosJugador = 2500; // ejemplo currency
-let perksComprados = [];
-
+// ------------------------------------- LÓGICA DE TIENDA -------------------------------------
 // Abrir Tienda
 function abrirTienda() {
   document.querySelector(".menu").classList.add("oculto");
@@ -151,7 +198,7 @@ btnTiendaRegresar.addEventListener("click", () => {
   document.querySelector(".menu").classList.remove("oculto");
 });
 
-// Mostrar info de perk
+// Mostrar información de un perk al hacer clic
 listaPerks.forEach(perk => {
   perk.addEventListener("click", () => {
     const nombre = perk.dataset.nombre;
@@ -179,12 +226,12 @@ listaPerks.forEach(perk => {
   });
 });
 
-// Cerrar info de perk
+// Cerrar ventana de información del perk
 cerrarInfo.addEventListener("click", () => {
   infoPerk.classList.add("oculto");
 });
 
-// Comprar perk
+// Función para comprar un perk
 function comprarPerk(perk, precio) {
   precio = parseInt(precio);
   if (datosJugador >= precio) {
@@ -193,7 +240,7 @@ function comprarPerk(perk, precio) {
 
     perk.classList.remove("bloqueado");
     perk.classList.add("desbloqueado");
-    perk.querySelector(".candado")?.remove();
+    perk.querySelector(".candado")?.remove(); // '?. remove' evita error si no hay candado
 
     infoPrecio.textContent = "";
     btnComprar.classList.add("oculto");

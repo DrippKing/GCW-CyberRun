@@ -10,15 +10,18 @@
   <div id="contenedor-principal">
     <!-- Música y audios -->
     <audio id="musica-fondo" loop></audio>
-    <audio id="sonido-boton" src="Button-Sound.mp3"></audio>
-    <audio id="sonido-select" src="Select-button-sound.mp3"></audio>
+    <audio id="sonido-btn_Hover" src="Button-Sound.mp3"></audio>
+    <audio id="sonido-btn_Click" src="Select-button-sound(Fixed).mp3"></audio>
 
     <!-- Pantalla de Inicio************************************************************************************** -->
     <section id="pantalla-inicio" class="pantalla activa">
       <div class="contenedor">
-        <h1 class="titulo-juego">Cyber Run<br> Escape the Mainframe</h1>
+        <div id="titulos">
+          <h1 class="titulo-juego">Cyber Run<h1>
+          <h2 class="titulo-juego">Escape from the Mainframe</h2> 
+        </div>
         <div class="menu">
-          <button class="btn" onclick="cambiarPantalla('juego')">SinglePlayer</button>
+          <button class="btn" onclick="seleccionarNivel()">SinglePlayer</button>
           <button class="btn" onclick="cambiarPantalla('multijugador')">Multiplayer</button>
           <button class="btn" onclick="abrirTienda()">Tienda</button>
           <button class="btn" onclick="abrirRanking()">Ranking</button>
@@ -31,16 +34,25 @@
         <h2>Opciones</h2>
         <div class="opcion">
           <label for="volumen-musica">Volumen Música:</label>
-          <input type="range" id="volumen-musica" min="0" max="1" step="0.01" value="1">
+          <input type="range" id="volumen-musica" min="0" max="1" step="0.01" value="0.01">
         </div>
         <div class="opcion">
           <label for="volumen-sonidos">Volumen Efectos:</label>
           <input type="range" id="volumen-sonidos" min="0" max="1" step="0.01" value="1">
         </div>
         <button class="btn" id="btn-regresar">Regresar</button>
-      </div>
     </section>
-    <!-- Contenedor de Ranking **********************************************************************************************-->
+    <!-- Contenedor de selector de niveles SinglePlayer ***************************************************************** -->
+    <div id="menu-niveles" class="menu-niveles oculto">
+     <h2>Selecciona un Nivel</h2>
+     <div class="niveles">
+       <button class="btn nivel" onclick="iniciarNivel(1)">Nivel 1</button>
+       <button class="btn nivel" onclick="iniciarNivel(2)">Nivel 2</button>
+       <button class="btn nivel" onclick="iniciarNivel(3)">Nivel 3</button>
+     </div>
+     <button class="btn" id="btn-niveles-regresar">Regresar</button>
+  </div>
+<!-- Contenedor de Ranking **********************************************************************************************-->
  <div id="menu-ranking" class="menu-ranking oculto">
   <h2>Ranking</h2>
   <ul id="lista-ranking">
@@ -106,6 +118,13 @@
 
  <!--Div Final-->
 </div>
+
+  <video muted autoplay loop id="video-bg">
+   <source src="./CyberVideo.mp4" type="video/mp4">
+  </video>
+
+  <div class="filtro-negro"></div>
+
 
   <script src="script.js"></script>
 </body>
