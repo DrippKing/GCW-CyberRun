@@ -10,11 +10,16 @@ let juegoPausado = false;
 
 // Función para pausar
 function pausarJuego() {
-  juegoPausado = true;
-  menuPausa.classList.remove("oculto");
-  musicaJuego.pause();
-  // se detiene todo lo dle nivel
+  if (juegoPausado) {//Si ya está pausado
+    continuarJuego(); //continua con el boton pausa
+  } else {
+    juegoPausado = true;
+    menuPausa.classList.remove("oculto");
+    musicaJuego.pause();
+    // reanuda juego
+  }
 }
+
 
 // Función para continuar
 function continuarJuego() {
