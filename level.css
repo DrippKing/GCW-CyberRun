@@ -1,0 +1,95 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap');
+
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  font-family: 'Orbitron', sans-serif;
+  background: url('bg.jpg') no-repeat center center fixed;
+  background-size: cover;
+  color: #00ffe0;
+  overflow: hidden;
+}
+
+
+/* Botón de pausa flotante */
+.pausa-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 10;
+
+   width: 200px;
+  padding: 12px;
+  font-size: 1rem;
+  font-family: inherit;
+  color: #0f0f0f;
+  background: linear-gradient(90deg, #00ffe0, #0080ff);
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+  box-shadow: 0 0 10px #00ffe0;
+}
+
+.pausa-btn:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 20px #00ffe0, 0 0 40px #0080ff;
+}
+
+/* Menú de pausa */
+.menu-pausa {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(15, 15, 15, 0.95);
+  padding: 30px;
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: 0 0 20px #00ffe0;
+  z-index: 100;
+}
+
+.menu-pausa h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  text-shadow: 0 0 10px #00ffe0;
+}
+
+
+/* Botones*/
+.btn {
+  width: 200px;
+  padding: 12px;
+  font-size: 1rem;
+  font-family: inherit;
+  color: #0f0f0f;
+  background: linear-gradient(90deg, #00ffe0, #0080ff);
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+  box-shadow: 0 0 10px #00ffe0;
+}
+
+.btn:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 20px #00ffe0, 0 0 40px #0080ff;
+}
+
+.btn.salir {
+  background: linear-gradient(90deg, #ff0040, #ff8000);
+  box-shadow: 0 0 10px #ff0040;
+}
+
+.btn.salir:hover {
+  box-shadow: 0 0 20px #ff0040, 0 0 40px #ff8000;
+}
+
+/* Oculta menu pausa */
+.oculto {
+  display: none;
+}
