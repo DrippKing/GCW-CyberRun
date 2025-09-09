@@ -1,0 +1,45 @@
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  font-family: 'Orbitron', sans-serif;
+  background: url('bg.jpg') no-repeat center center fixed; 
+  background-size: cover;
+  color: #00ffe0;
+  overflow: hidden;
+
+} 
+
+
+
+
+
+/* Botones*/
+.btn {
+  width: 200px;
+  padding: 12px;
+  font-size: 1rem;
+  font-family: inherit;
+  color: #0f0f0f;
+  background: linear-gradient(90deg, #00ffe0, #0080ff);
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+  box-shadow: 0 0 10px #00ffe0;
+}
+
+.btn:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 20px #00ffe0, 0 0 40px #0080ff;
+}
+
+.btn.salir {
+  background: linear-gradient(90deg, #ff0040, #ff8000);
+  box-shadow: 0 0 10px #ff0040;
+}
+
+.btn.salir:hover {
+  box-shadow: 0 0 20px #ff0040, 0 0 40px #ff8000;
+}
