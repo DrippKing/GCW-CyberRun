@@ -8,6 +8,33 @@ const musicaJuego = document.getElementById("musica-juego");
 
 let juegoPausado = false;
 
+//variables para sonido
+const sonidoHover = document.getElementById("sonido-hover");
+const sonidoClick = document.getElementById("sonido-click");
+
+// Configuración de volúmenes
+sonidoHover.volume = 0.1;
+sonidoClick.volume = 0.2;
+musicaJuego.volume = 0.3; // 0.05 volumen bajo por defecto
+
+const botones = document.querySelectorAll(".btn");
+
+botones.forEach(boton => {
+  boton.addEventListener("mouseenter", () => {
+    sonidoHover.currentTime = 0;
+    sonidoHover.play().catch(() => {
+      console.log("Interacción requerida para reproducir sonido.");
+    });
+  });
+
+  boton.addEventListener("mousedown", () => {
+    sonidoClick.currentTime = 0;
+    sonidoClick.play().catch(() => {
+      console.log("Interacción requerida para reproducir sonido.");
+    });
+  });
+});
+
 
 //para animacion del fondo
 let fondoX = 0;
@@ -55,3 +82,17 @@ btnReiniciar.addEventListener("click", () => location.reload());
 
 // regresa al menu inicio (redirecciona al index)
 btnMenu.addEventListener("click", () => window.location.href = "index.html");
+
+//audio
+// Iniciar música de fondo en la primera interacción
+//esto evita errores en la consola si el navegador bloquea autoplay
+function iniciarMusicaJuego() {
+  if (musicaJuego.paused) {
+    musicaJuego.play().catch(() => {
+      console.log("Interacción requerida para iniciar la música.");
+    });
+  }
+}
+
+window.addEventListener("click", iniciarMusicaJuego, { once: true });
+window.addEventListener("keydown", iniciarMusicaJuego, { once: true });
