@@ -105,6 +105,7 @@ body {/*animacion no automatica*/
   display: none;
 }
 
+/*para animacion fondo*/
 @keyframes moverFondo {
   0% {
     background-position: 0 0;
@@ -114,12 +115,28 @@ body {/*animacion no automatica*/
   }
 }
 
-
+/*  CONTADORES  */
+/*Contador distancia*/
 #contador {
   position: absolute;
   top: 20px;
   left: 20px;
   font-size: 2rem;
+  color: #00ffe0;
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 10px 20px;
+  border-radius: 10px;
+  z-index: 10;
+  font-family: 'Orbitron', sans-serif;
+  box-shadow: 0 0 10px #00ffe0;
+}
+
+/*Contador de puntos*/
+#puntos {
+  position: absolute;
+  top: 100px; /*70 debajo del contador de tiempo */
+  left: 20px;
+  font-size: 1.8rem;
   color: #00ffe0;
   background-color: rgba(0, 0, 0, 0.6);
   padding: 10px 20px;

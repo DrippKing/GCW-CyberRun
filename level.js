@@ -116,3 +116,23 @@ function iniciarMusicaJuego() {
 
 window.addEventListener("click", iniciarMusicaJuego, { once: true });
 window.addEventListener("keydown", iniciarMusicaJuego, { once: true });
+
+
+
+//conatdor puntos
+const puntosElement = document.getElementById("puntos");
+let puntos = 0;
+
+// Aumentar puntos con la tecla space
+window.addEventListener("keydown", (e) => {
+  if (e.code === "Space" && !juegoPausado) {
+    puntos++;
+    puntosElement.textContent = `Puntos: ${puntos}`;
+
+    // Reproducir sonido al ganar punto
+    sonidoHover.currentTime = 0;
+    sonidoHover.play().catch(() => {
+      console.log("Interacción requerida para reproducir sonido.");
+    });
+  }
+});
