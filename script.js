@@ -171,6 +171,11 @@ document.getElementById("btn-niveles-regresar").addEventListener("click", () => 
   document.getElementById("titulos").classList.remove("oculto");
 });
 
+function iniciarNivel(nivel) {
+  alert("Iniciar nivel: " + nivel);
+  window.location.href = `nivel_${nivel}.html`;
+}
+
 // ------------------------------------- LÓGICA DE RANKING -------------------------------------
 // Abrir Ranking
 function abrirRanking() {
