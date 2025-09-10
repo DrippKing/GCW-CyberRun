@@ -20,7 +20,7 @@ html, body {
 }
 
 body {/*animacion no automatica*/
-  background: url('bg.jpg') repeat-x;
+  background: url('bg2.jpg') repeat-x;
   background-size: cover;
 }
 
