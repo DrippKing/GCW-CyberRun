@@ -61,14 +61,29 @@ let velocidadFondo = 1; // píxeles por frame
 let pisoX = 0;
 let velocidadPiso = 5; //2
 
+let cuadro1X = 0;
+let velocidadC1 = 0.5; // 
+
+let cuadro2X = 0;
+let velocidadC2 = 7; // 
+
+
 
 function moverFondo() {
   //fondo solo se mueve cuando el juego no está pausado
   if (!juegoPausado) {
     fondoX -= velocidadFondo;
+
+    cuadro1X -= velocidadC1;
+    cuadro2X -= velocidadC2;
+
     pisoX -= velocidadPiso;
 
     document.getElementById("fondo").style.backgroundPosition = `${fondoX}px 0`;//para la imagen de fondo
+    
+    document.getElementById("cuadro1").style.backgroundPosition = `${cuadro1X}px 0`;
+    document.getElementById("cuadro2").style.backgroundPosition = `${cuadro2X}px 0`;
+    
     document.getElementById("piso").style.backgroundPosition = `${pisoX}px 0`;//para la imagen de piso
   }
   requestAnimationFrame(moverFondo);//bucle se ejecuta con esto

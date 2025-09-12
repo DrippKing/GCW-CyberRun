@@ -147,6 +147,34 @@ html, body {
   box-shadow: 0 0 10px #00ffe0;
 }
 
+
+/* cuadros 1 *//*
+#cuadro1 {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 200%;
+  height: 100%;
+  background: url('cuadro1.png') repeat-x;
+  background-size: auto 100%;
+  z-index: -0.5; /* Entre fondo (-1) y piso (0) */
+/*  pointer-events: none;
+}*/
+
+/* cuadros 2 */
+#cuadro2 {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 200%;
+  height: 100%;
+  background: url('cuadro2.png') repeat-x;
+  background-size: auto 100%;
+  z-index: -0.25; /* Encima de capa1 pero debajo del HUD */
+  pointer-events: none;
+}
+
+
 /*para imagen del piso */
 #piso {
   position: fixed;
