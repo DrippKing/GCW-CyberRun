@@ -7,21 +7,22 @@ html, body {
   height: 100%;
   width: 100%;
   font-family: 'Orbitron', sans-serif;
-/*  background: url('bg.jpg') no-repeat center center fixed;*/
-/*
-  background: url('bg.jpg') repeat-x; /* Se repite horizontalmente */
- /* animation: moverFondo 10s linear infinite;*/
-
-
-
   background-size: cover;
   color: #00ffe0;
   overflow: hidden;
 }
 
-body {/*animacion no automatica*/
+
+/*para la imagen de fondo*/
+#fondo {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 200%;
+  height: 100%;
   background: url('bg2.jpg') repeat-x;
-  background-size: cover;
+  background-size: contain;
+  z-index: -1;
 }
 
 

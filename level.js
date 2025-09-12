@@ -61,7 +61,11 @@ function moverFondo() {
   //fondo solo se mueve cuando el juego no está pausado
   if (!juegoPausado) {
     fondoX -= velocidadFondo;
-    document.body.style.backgroundPosition = `${fondoX}px 0`;
+  //  document.body.style.backgroundPosition = `${fondoX}px 0`;
+
+  //para la imagen de fondo
+  document.getElementById("fondo").style.backgroundPosition = `${fondoX}px 0`;
+
   }
   requestAnimationFrame(moverFondo);//bucle se ejecuta con esto
 }
