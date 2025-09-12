@@ -146,3 +146,16 @@ html, body {
   font-family: 'Orbitron', sans-serif;
   box-shadow: 0 0 10px #00ffe0;
 }
+
+/*para imagen del piso */
+#piso {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 200%;
+  height: 100%; /* ajusta según el alto real de piso2.png */
+  background: url('piso4.png') repeat-x;
+  background-size: auto 100%;
+/*  background-size: contain;*/
+  z-index: 0; /* detrás del HUD pero encima del fondo */
+}

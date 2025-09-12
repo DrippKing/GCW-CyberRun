@@ -57,15 +57,19 @@ botones.forEach(boton => {
 let fondoX = 0;
 let velocidadFondo = 1; // píxeles por frame
 
+//para animacion del piso
+let pisoX = 0;
+let velocidadPiso = 5; //2
+
+
 function moverFondo() {
   //fondo solo se mueve cuando el juego no está pausado
   if (!juegoPausado) {
     fondoX -= velocidadFondo;
-  //  document.body.style.backgroundPosition = `${fondoX}px 0`;
+    pisoX -= velocidadPiso;
 
-  //para la imagen de fondo
-  document.getElementById("fondo").style.backgroundPosition = `${fondoX}px 0`;
-
+    document.getElementById("fondo").style.backgroundPosition = `${fondoX}px 0`;//para la imagen de fondo
+    document.getElementById("piso").style.backgroundPosition = `${pisoX}px 0`;//para la imagen de piso
   }
   requestAnimationFrame(moverFondo);//bucle se ejecuta con esto
 }
