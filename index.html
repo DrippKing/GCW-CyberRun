@@ -25,6 +25,7 @@
           <button class="btn" onclick="cambiarPantalla('multijugador')">Multiplayer</button>
           <button class="btn" onclick="abrirTienda()">Tienda</button>
           <button class="btn" onclick="abrirRanking()">Ranking</button>
+          <button id="btnTransmisiones" class="btn">Transmisiones</button>
           <button class="btn" onclick="abrirOpciones()">Opciones</button>
           <button class="btn salir" onclick="cerrarJuego()">Salir</button>
         </div>
@@ -115,6 +116,25 @@
     <button id="btn-comprar" class="btn oculto">Comprar</button>
   </div>
 </div>
+
+<!-- Contenedor de la Terminal de Transmisiones -->
+<div id="contenedor-transmisiones" class="contenedor-oculto">
+  <div class="transmisiones-caja">
+    <h2>Terminal de Transmisiones</h2>
+    <p>Envía una señal a la red global 🌐</p>
+
+    <textarea id="mensajeTransmision" placeholder="Escribe tu mensaje aquí..." maxlength="200"></textarea>
+
+    <div class="botones-transmision">
+      <button id="btnCerrarTransmision" class="btn">Volver</button>
+      <button id="btnEnviarTransmision" class="btn">Enviar transmisión</button>
+    </div>
+
+    <p id="estadoTransmision" class="estado-transmision"></p>
+  </div>
+</div>
+
+
 
  <!--Div Final-->
 </div>

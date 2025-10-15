@@ -254,3 +254,68 @@ function comprarPerk(perk, precio) {
     alert("No tienes suficientes datos.");
   }
 }
+// =================================================================================================
+// TERMINAL DE TRANSMISIONES (DISCORD WEBHOOK)
+// =================================================================================================
+
+// URL del webhook de tu canal de Discord
+const WEBHOOK_URL = "https://discord.com/api/webhooks/1427773296291745925/uD5ClVLf_UjT6zsZ5yXxtXIgPP58KN2OMgS9FH7jKQk-HCRdaFjV-c27wd88o6I73KGO"; // <-- reemplaza esto
+
+// Referencias a los elementos del DOM
+const btnTransmisiones = document.getElementById("btnTransmisiones");
+const contenedorTransmisiones = document.getElementById("contenedor-transmisiones");
+const btnEnviarTransmision = document.getElementById("btnEnviarTransmision");
+const btnCerrarTransmision = document.getElementById("btnCerrarTransmision");
+const mensajeTransmision = document.getElementById("mensajeTransmision");
+const estadoTransmision = document.getElementById("estadoTransmision");
+
+// Mostrar el contenedor de transmisiones
+btnTransmisiones.addEventListener("click", () => {
+  document.getElementById("sonido-btn_Click").play();
+  contenedorTransmisiones.style.display = "flex";
+});
+
+// Cerrar el contenedor y volver al menú
+btnCerrarTransmision.addEventListener("click", () => {
+  document.getElementById("sonido-btn_Click").play();
+  contenedorTransmisiones.style.display = "none";
+  mensajeTransmision.value = "";
+  estadoTransmision.textContent = "";
+});
+
+// Enviar la transmisión al Webhook
+btnEnviarTransmision.addEventListener("click", async () => {
+  document.getElementById("sonido-btn_Click").play();
+  const mensaje = mensajeTransmision.value.trim();
+
+  if (mensaje === "") {
+    estadoTransmision.textContent = "⚠️ Escribe un mensaje antes de transmitir.";
+    estadoTransmision.style.color = "#ff8080";
+    return;
+  }
+
+  estadoTransmision.textContent = "Enviando transmisión...";
+  estadoTransmision.style.color = "#00ffe0";
+
+  try {
+    const response = await fetch(WEBHOOK_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        content: `📡 Transmisión desde *CyberRun*: \n> ${mensaje}`
+      })
+    });
+
+    if (response.ok) {
+      estadoTransmision.textContent = "✅ Transmisión enviada con éxito.";
+      estadoTransmision.style.color = "#00ff9d";
+      mensajeTransmision.value = "";
+    } else {
+      estadoTransmision.textContent = "❌ Error al enviar transmisión.";
+      estadoTransmision.style.color = "#ff8080";
+    }
+  } catch (error) {
+    estadoTransmision.textContent = "❌ Error de conexión con la red.";
+    estadoTransmision.style.color = "#ff8080";
+  }
+});
