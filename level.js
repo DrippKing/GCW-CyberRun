@@ -1,6 +1,4 @@
-// ==========================
-// 🎮 INTERFAZ Y LÓGICA JUEGO
-// ==========================
+// INTERFAZ Y LÓGICA JUEGO
 
 // Elementos del DOM
 const btnPausa = document.getElementById("btn-pausa");
