@@ -175,7 +175,7 @@ loaderSTL.load("obs.stl", function (geometry) {
   mesh.rotateX(Math.PI / 2);
   scene.add(mesh);
 });
-
+/*
 const textureLoader3 = new THREE.TextureLoader();
 textureLoader3.load("top.png", function (texture) {
   const material3 = new THREE.MeshPhongMaterial({ map: texture });
@@ -190,7 +190,7 @@ loaderSTL3.load("parking.stl", function (geometry) {
    mesh8.rotateZ(-Math.PI / 2);
   scene.add(mesh8);
 });
-});
+});*/
 
 
 // Modelos GLTF
@@ -201,7 +201,8 @@ const gltfModels = [
   { file: "station.glb", scale: [1, 1, 1], position: [25, 0, 25], rotationY: Math.PI / 2 },
   { file: "city.glb", scale: [4.5, 4.5, 4.5], position: [18, -0.98, -35] },
   { file: "hotel.glb", scale: [11.5, 11.5, 11.5], position: [18, -0.98, 0] },
-  { file: "robot.glb", scale: [2.5, 2.5, 2.5], position: [8, 3, 20] }
+  { file: "robot.glb", scale: [2.5, 2.5, 2.5], position: [8, 3, 20] },
+  { file: "cilindro.glb", scale: [0.03, 0.03, 0.03], position: [8, 0, 30],rotationZ: -Math.PI / 2  }
 ];
 
 //loaders
