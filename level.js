@@ -168,7 +168,7 @@ textureLoader2.load("metal.jpg", function (texture) {
 
 const loaderSTL = new STLLoader();
 loaderSTL.load("obs.stl", function (geometry) {
-  const material = new THREE.MeshPhongMaterial({ color: "00BFFF" });
+  const material = new THREE.MeshPhongMaterial({ color: "#00BFFF" });
   const mesh = new THREE.Mesh(geometry, material);
   mesh.scale.set(0.05, 0.05, 0.05);
   mesh.position.set(-2, 6.2, 15);
@@ -206,7 +206,7 @@ textureLoader5.load("Texture_Metal.png", function (texture) {
 
 const loaderSTL6 = new STLLoader();
 loaderSTL6.load("car.stl", function (geometry) {
-  const material6 = new THREE.MeshPhongMaterial({ //color: "00BFFF" 
+  const material6 = new THREE.MeshPhongMaterial({ //color: "#00BFFF" 
 
   });
   const mesh7 = new THREE.Mesh(geometry, material6);
@@ -217,6 +217,23 @@ loaderSTL6.load("car.stl", function (geometry) {
   scene.add(mesh7);
 });
 
+const loaderSTL9 = new STLLoader();
+loaderSTL9.load("SKM_Robot.stl", function (geometry) {
+  const material9 = new THREE.MeshPhongMaterial({ color: "#00BFFF" });
+  const mesh9 = new THREE.Mesh(geometry, material9);
+  mesh9.scale.set(0.5, 0.5, 0.5);
+  mesh9.position.set(-2, 2.2, 25);
+ 
+ //  mesh9.rotateY(-Math.PI / 16);
+
+    mesh9.rotateX(Math.PI / 2);
+ // mesh9.rotateZ(Math.PI / 8);
+  scene.add(mesh9);
+});
+
+
+//SKM_Robot
+
 // Modelos GLTF
 //asi no se repite el bloque de cod por cada mod
 const gltfModels = [
@@ -224,7 +241,7 @@ const gltfModels = [
   { file: "STREET.glb", scale: [3, 3, 3], position: [-20, 3, -18], rotationY: -Math.PI / 2 },
   { file: "station.glb", scale: [1, 1, 1], position: [25, 0, 25], rotationY: Math.PI / 2 },
   { file: "city.glb", scale: [4.5, 4.5, 4.5], position: [18, -0.98, -35] },
-  { file: "hotel.glb", scale: [11.5, 11.5, 11.5], position: [58, -0.98, 0] },//18, -0.98, 0
+  { file: "hotel.glb", scale: [11.5, 11.5, 11.5], position: [18, -0.98, 0] },//18, -0.98, 0
   { file: "robot.glb", scale: [2.5, 2.5, 2.5], position: [8, 3, 20] },
   { file: "cilindro.glb", scale: [0.03, 0.03, 0.03], position: [8, 0, 30],rotationZ: -Math.PI / 2  },
   { file: "char.glb", scale: [2.5, 2.5, 2.5], position: [-18, 1.5, 20] }
