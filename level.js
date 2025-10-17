@@ -191,7 +191,18 @@ loaderSTL3.load("parking.stl", function (geometry) {
   scene.add(mesh8);
 });
 });*/
-
+const textureLoader5 = new THREE.TextureLoader();
+textureLoader5.load("Texture_Metal.png", function (texture) {
+  const material4 = new THREE.MeshPhongMaterial({ map: texture });
+  const loaderSTL3 = new STLLoader();
+  loaderSTL3.load("cubo.stl", function (geometry) {
+    const mesh6 = new THREE.Mesh(geometry, material4);
+    mesh6.scale.set(0.25, 0.25, 0.25);
+    mesh6.position.set(0, 5, 20);
+    mesh6.rotateX(-Math.PI / 2);
+    scene.add(mesh6);
+  });
+});
 
 // Modelos GLTF
 //asi no se repite el bloque de cod por cada mod
@@ -203,7 +214,7 @@ const gltfModels = [
   { file: "hotel.glb", scale: [11.5, 11.5, 11.5], position: [18, -0.98, 0] },
   { file: "robot.glb", scale: [2.5, 2.5, 2.5], position: [8, 3, 20] },
   { file: "cilindro.glb", scale: [0.03, 0.03, 0.03], position: [8, 0, 30],rotationZ: -Math.PI / 2  },
-  { file: "char.glb", scale: [2.5, 2.5, 2.5], position: [18, 3, 20] }
+  { file: "char.glb", scale: [2.5, 2.5, 2.5], position: [-18, 1.5, 20] }
 ];
 
 //loaders
