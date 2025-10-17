@@ -145,12 +145,13 @@ textureLoader.load("piso3 (2).png", function (texture) {
 });
 
 // cubo
+/*
 const cube = new THREE.Mesh(
   new THREE.BoxGeometry(1, 1, 1, 5, 5, 5),
   new THREE.MeshBasicMaterial({ color: 0x00ff00, wireframe: true })
 );
 cube.position.set(0, 5, 0);
-scene.add(cube);
+scene.add(cube);*/
 
 // STL
 const textureLoader2 = new THREE.TextureLoader();
@@ -223,11 +224,10 @@ loaderSTL9.load("SKM_Robot.stl", function (geometry) {
   const mesh9 = new THREE.Mesh(geometry, material9);
   mesh9.scale.set(0.5, 0.5, 0.5);
   mesh9.position.set(-2, 2.2, 25);
- 
- //  mesh9.rotateY(-Math.PI / 16);
+ //   mesh9.rotateX(Math.PI / 2);
+ mesh9.rotation.x = -Math.PI / 2; //a vertical
+mesh9.rotation.z = Math.PI; // 
 
-    mesh9.rotateX(Math.PI / 2);
- // mesh9.rotateZ(Math.PI / 8);
   scene.add(mesh9);
 });
 
@@ -239,7 +239,7 @@ loaderSTL9.load("SKM_Robot.stl", function (geometry) {
 const gltfModels = [
   { file: "machine.glb", scale: [1, 1, 1], position: [-30, 1, 18] },
   { file: "STREET.glb", scale: [3, 3, 3], position: [-20, 3, -18], rotationY: -Math.PI / 2 },
-  { file: "station.glb", scale: [1, 1, 1], position: [25, 0, 25], rotationY: Math.PI / 2 },
+  { file: "station.glb", scale: [1, 1, 1], position: [25, 0, 25], rotationX: -Math.PI / 2,rotationY: Math.PI / 2 },
   { file: "city.glb", scale: [4.5, 4.5, 4.5], position: [18, -0.98, -35] },
   { file: "hotel.glb", scale: [11.5, 11.5, 11.5], position: [18, -0.98, 0] },//18, -0.98, 0
   { file: "robot.glb", scale: [2.5, 2.5, 2.5], position: [8, 3, 20] },
