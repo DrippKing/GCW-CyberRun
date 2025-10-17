@@ -176,6 +176,21 @@ loaderSTL.load("obs.stl", function (geometry) {
   scene.add(mesh);
 });
 
+const textureLoader3 = new THREE.TextureLoader();
+textureLoader3.load("top.png", function (texture) {
+  const material3 = new THREE.MeshPhongMaterial({ map: texture });
+const loaderSTL3 = new STLLoader();
+loaderSTL3.load("parking.stl", function (geometry) {
+ // const material = new THREE.MeshPhongMaterial({ color: "00BFFF" });
+  const mesh8 = new THREE.Mesh(geometry, material3);
+  mesh8.scale.set(0.005, 0.005, 0.005);
+  mesh8.position.set(15, 0.2, 25);
+  mesh8.rotateY(-Math.PI / 2);
+  mesh8.rotateX(-Math.PI / 2);
+   mesh8.rotateZ(-Math.PI / 2);
+  scene.add(mesh8);
+});
+});
 
 
 // Modelos GLTF
