@@ -104,7 +104,7 @@ loader.load("cielo.jpg", function (texture) {
 
 // Cámara
 const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight);
-camera.position.set(0, 5, 20);
+camera.position.set(0, 5, 40);//0,5,20
 
 // Renderer
 const renderer = new THREE.WebGLRenderer({ alpha: true });
@@ -197,11 +197,24 @@ textureLoader5.load("Texture_Metal.png", function (texture) {
   const loaderSTL3 = new STLLoader();
   loaderSTL3.load("cubo.stl", function (geometry) {
     const mesh6 = new THREE.Mesh(geometry, material4);
-    mesh6.scale.set(0.25, 0.25, 0.25);
+    mesh6.scale.set(0.5, 0.5, 0.5);
     mesh6.position.set(0, 5, 20);
     mesh6.rotateX(-Math.PI / 2);
     scene.add(mesh6);
   });
+});
+
+const loaderSTL6 = new STLLoader();
+loaderSTL6.load("car.stl", function (geometry) {
+  const material6 = new THREE.MeshPhongMaterial({ //color: "00BFFF" 
+
+  });
+  const mesh7 = new THREE.Mesh(geometry, material6);
+  mesh7.scale.set(2.0, 2.0, 2.0);
+  mesh7.position.set(-32, 4.2, 35);
+  mesh7.rotateY(Math.PI / 2);
+  mesh7.rotateX(-Math.PI / 2);
+  scene.add(mesh7);
 });
 
 // Modelos GLTF
@@ -211,7 +224,7 @@ const gltfModels = [
   { file: "STREET.glb", scale: [3, 3, 3], position: [-20, 3, -18], rotationY: -Math.PI / 2 },
   { file: "station.glb", scale: [1, 1, 1], position: [25, 0, 25], rotationY: Math.PI / 2 },
   { file: "city.glb", scale: [4.5, 4.5, 4.5], position: [18, -0.98, -35] },
-  { file: "hotel.glb", scale: [11.5, 11.5, 11.5], position: [18, -0.98, 0] },
+  { file: "hotel.glb", scale: [11.5, 11.5, 11.5], position: [58, -0.98, 0] },//18, -0.98, 0
   { file: "robot.glb", scale: [2.5, 2.5, 2.5], position: [8, 3, 20] },
   { file: "cilindro.glb", scale: [0.03, 0.03, 0.03], position: [8, 0, 30],rotationZ: -Math.PI / 2  },
   { file: "char.glb", scale: [2.5, 2.5, 2.5], position: [-18, 1.5, 20] }
