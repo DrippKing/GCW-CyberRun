@@ -43,18 +43,6 @@ botones.forEach(boton => {
   });
 });
 
-// Fondo animado
-/*
-let pisoX = 0;
-function moverFondo() {
-  if (!juegoPausado) {
-    pisoX -= 5;
-    document.getElementById("piso").style.backgroundPosition = `${pisoX}px 0`;
-  }
-  requestAnimationFrame(moverFondo);
-}
-moverFondo();*/
-
 // Funciones pausa
 function pausarJuego() {
   if (juegoPausado) {
