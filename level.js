@@ -202,7 +202,8 @@ const gltfModels = [
   { file: "city.glb", scale: [4.5, 4.5, 4.5], position: [18, -0.98, -35] },
   { file: "hotel.glb", scale: [11.5, 11.5, 11.5], position: [18, -0.98, 0] },
   { file: "robot.glb", scale: [2.5, 2.5, 2.5], position: [8, 3, 20] },
-  { file: "cilindro.glb", scale: [0.03, 0.03, 0.03], position: [8, 0, 30],rotationZ: -Math.PI / 2  }
+  { file: "cilindro.glb", scale: [0.03, 0.03, 0.03], position: [8, 0, 30],rotationZ: -Math.PI / 2  },
+  { file: "char.glb", scale: [2.5, 2.5, 2.5], position: [18, 3, 20] }
 ];
 
 //loaders
