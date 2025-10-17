@@ -86,9 +86,9 @@ window.addEventListener("keydown", (e) => {
   }
 });
 
+
 // ============================
-// 🌐 ESCENA THREE.JS INTEGRADA
-// ============================
+//apartir de aqui se hace lo de three.js y modelos
 
 import * as THREE from "./three.module.js";
 import { OrbitControls } from "./OrbitControls.js";
@@ -134,6 +134,7 @@ textureLoader.load("piso3 (2).png", function (texture) {
   texture.repeat.set(3, 3);
   pisoTexture = texture;
 
+  //plano para piso
   const planeGeometry = new THREE.PlaneGeometry(70, 100);
   const planeMaterial = new THREE.MeshStandardMaterial({
     map: texture,
@@ -145,7 +146,7 @@ textureLoader.load("piso3 (2).png", function (texture) {
   scene.add(plane);
 });
 
-// Cubo de prueba
+// cubo
 const cube = new THREE.Mesh(
   new THREE.BoxGeometry(1, 1, 1, 5, 5, 5),
   new THREE.MeshBasicMaterial({ color: 0x00ff00, wireframe: true })
@@ -153,7 +154,7 @@ const cube = new THREE.Mesh(
 cube.position.set(0, 5, 0);
 scene.add(cube);
 
-// Modelos STL
+// STL
 const textureLoader2 = new THREE.TextureLoader();
 textureLoader2.load("metal.jpg", function (texture) {
   const material2 = new THREE.MeshPhongMaterial({ map: texture });
@@ -180,6 +181,7 @@ loaderSTL.load("obs.stl", function (geometry) {
 
 
 // Modelos GLTF
+//asi no se repite el bloque de cod por cada mod
 const gltfModels = [
   { file: "machine.glb", scale: [1, 1, 1], position: [-30, 1, 18] },
   { file: "STREET.glb", scale: [3, 3, 3], position: [-20, 3, -18], rotationY: -Math.PI / 2 },
@@ -189,6 +191,7 @@ const gltfModels = [
   { file: "robot.glb", scale: [2.5, 2.5, 2.5], position: [8, 3, 20] }
 ];
 
+//loaders
 const loaderGLB = new GLTFLoader();
 gltfModels.forEach(model => {
   loaderGLB.load(model.file, (gltf) => {
@@ -202,7 +205,7 @@ gltfModels.forEach(model => {
 
 // Animación
 function animate() {
-  if (pisoTexture && !juegoPausado) {
+  if (pisoTexture && !juegoPausado) {//mueve textura piso
     pisoTexture.offset.y += 0.01;
   }
 
