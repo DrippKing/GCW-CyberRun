@@ -13,7 +13,7 @@ html, body {
 }
 
 
-/*para la imagen de fondo*/
+/*para la imagen de fondo*//*
 #fondo {
   position: fixed;
   top: 0;
@@ -23,7 +23,7 @@ html, body {
   background: url('bg2.jpg') repeat-x;
   background-size: contain;
   z-index: -1;
-}
+}*/
 
 
 /* Botón de pausa flotante */
@@ -147,43 +147,21 @@ html, body {
   box-shadow: 0 0 10px #00ffe0;
 }
 
-
-/* cuadros 1 *//*
-#cuadro1 {
+*/
+/* Fondo 3D canvas */
+#three-container canvas {
   position: fixed;
   top: 0;
   left: 0;
-  width: 200%;
+  width: 100%;
   height: 100%;
-  background: url('cuadro1.png') repeat-x;
-  background-size: auto 100%;
-  z-index: -0.5; /* Entre fondo (-1) y piso (0) */
-/*  pointer-events: none;
-}*/
-
-/* cuadros 2 */
-#cuadro2 {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 200%;
-  height: 100%;
-  background: url('cuadro2.png') repeat-x;
-  background-size: auto 100%;
-  z-index: -0.25; /* Encima de capa1 pero debajo del HUD */
-  pointer-events: none;
+  z-index: 0; /* por debajo de la interfaz */
 }
 
-
-/*para imagen del piso */
-#piso {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 200%;
-  height: 100%; /* ajusta según el alto real de piso2.png */
-  background: url('piso4.png') repeat-x;
-  background-size: auto 100%;
-/*  background-size: contain;*/
-  z-index: 0; /* detrás del HUD pero encima del fondo */
+#contador,
+#puntos,
+#btn-pausa,
+#menu-pausa {
+  z-index: 10;
+  position: absolute;
 }
