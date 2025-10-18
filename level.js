@@ -233,7 +233,6 @@ mesh9.rotation.z = Math.PI; //
 
 
 //SKM_Robot
-
 // Modelos GLTF
 //asi no se repite el bloque de cod por cada mod
 const gltfModels = [
