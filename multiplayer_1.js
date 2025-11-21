@@ -1,6 +1,6 @@
-// === COPIA ADAPTADA DEL SINGLEPLAYER ===
-// Puedes añadir aquí lógica para varios jugadores, sincronización, etc.
+// INTERFAZ Y LÓGICA JUEGO
 
+// Elementos del DOM
 import * as THREE from "./three.module.js";
 import { OrbitControls } from "./OrbitControls.js";
 import { STLLoader } from "./STLLoader.js";
@@ -45,9 +45,13 @@ document.querySelectorAll(".btn").forEach(btn => {
 
 // Pausa
 function pausarJuego() {
-  juegoPausado = true;
-  menuPausa.classList.remove("oculto");
-  musicaJuego.pause();
+  if (juegoPausado) {
+    continuarJuego();
+  } else {
+    juegoPausado = true;
+    menuPausa.classList.remove("oculto");
+    musicaJuego.pause();
+  }
 }
 
 function continuarJuego() {
@@ -61,29 +65,53 @@ btnContinuar.addEventListener("click", continuarJuego);
 btnReiniciar.addEventListener("click", () => location.reload());
 btnMenu.addEventListener("click", () => window.location.href = "index.html");
 
-window.addEventListener("click", () => musicaJuego.play(), { once: true });
+function iniciarMusicaJuego() {
+  if (musicaJuego.paused) {
+    musicaJuego.play().catch(() => {});
+  }
+}
+window.addEventListener("click", iniciarMusicaJuego, { once: true });
+window.addEventListener("keydown", iniciarMusicaJuego, { once: true });
 
-// =========================
-//   THREE.JS IGUAL QUE EN SINGLEPLAYER
-// =========================
+// Puntos
+const puntosElement = document.getElementById("puntos");
+let puntos = 0;
 
+/*
+window.addEventListener("keydown", (e) => {
+  if (e.code === "Space" && !juegoPausado) {
+    puntos++;
+    puntosElement.textContent = `Puntos: ${puntos}`;
+    sonidoHover.currentTime = 0;
+    sonidoHover.play().catch(() => {});
+  }
+});*/
+
+// Escena
 const scene = new THREE.Scene();
+// Fondo con textura
 const loader = new THREE.TextureLoader();
+loader.load("cielo.jpg", function (texture) {
+  scene.background = texture;
+});
 
-loader.load("cielo.jpg", tex => scene.background = tex);
-
+// Cámara
 const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight);
-camera.position.set(0, 5, 40);
+camera.position.set(0, 5, 40);//0,5,20
 
+// Renderer
 const renderer = new THREE.WebGLRenderer({ alpha: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.getElementById("three-container").appendChild(renderer.domElement);
 
-scene.add(new THREE.HemisphereLight(0xffffbb, 0x080820, 1));
+// Luces
+const hemisphereLight = new THREE.HemisphereLight(0xffffbb, 0x080820, 1);
+scene.add(hemisphereLight);
 const dir = new THREE.DirectionalLight(0xffffff, 1);
 dir.position.set(1, 5, -1);
 scene.add(dir);
 
+// Controles
 const cameraControl = new OrbitControls(camera, renderer.domElement);
 
 // Piso animado
@@ -93,6 +121,7 @@ loader.load("piso3 (2).png", tex => {
   tex.repeat.set(3, 3);
   pisoTexture = tex;
 
+  //plano para piso
   const plane = new THREE.Mesh(
     new THREE.PlaneGeometry(70, 100),
     new THREE.MeshStandardMaterial({ map: tex, side: THREE.DoubleSide })
@@ -101,8 +130,124 @@ loader.load("piso3 (2).png", tex => {
   scene.add(plane);
 });
 
-// Carga de modelos igual que en level.js
-// (puedes copiar todo el bloque tal cual para mantener los mismos objetos)
+// Carga de modelos 
+// STL
+const textureLoader2 = new THREE.TextureLoader();
+textureLoader2.load("metal.jpg", function (texture) {
+  const material2 = new THREE.MeshPhongMaterial({ map: texture });
+  const loaderSTL2 = new STLLoader();
+  loaderSTL2.load("obs.stl", function (geometry) {
+    const mesh2 = new THREE.Mesh(geometry, material2);
+    mesh2.scale.set(0.05, 0.05, 0.05);
+    mesh2.position.set(-28, 0, 15);
+    mesh2.rotateX(-Math.PI / 2);
+    scene.add(mesh2);
+  });
+});
+
+const loaderSTL = new STLLoader();
+loaderSTL.load("obs.stl", function (geometry) {
+  const material = new THREE.MeshPhongMaterial({ color: "#00BFFF" });
+  const mesh = new THREE.Mesh(geometry, material);
+  mesh.scale.set(0.05, 0.05, 0.05);
+  mesh.position.set(22, 6.2, -15);
+  mesh.rotateX(Math.PI / 2);
+  scene.add(mesh);
+});
+const textureLoader5 = new THREE.TextureLoader();
+textureLoader5.load("Texture_Metal.png", function (texture) {
+  const material4 = new THREE.MeshPhongMaterial({ map: texture });
+  const loaderSTL3 = new STLLoader();
+  loaderSTL3.load("cubo.stl", function (geometry) {
+    const mesh6 = new THREE.Mesh(geometry, material4);
+    mesh6.scale.set(0.5, 0.5, 0.5);
+    mesh6.position.set(0, 5, 20);
+    mesh6.rotateX(-Math.PI / 2);
+    scene.add(mesh6);
+  });
+});
+
+const loaderSTL6 = new STLLoader();
+loaderSTL6.load("car.stl", function (geometry) {
+  const material6 = new THREE.MeshPhongMaterial({ //color: "#00BFFF" 
+
+  });
+  const mesh7 = new THREE.Mesh(geometry, material6);
+  mesh7.scale.set(2.0, 2.0, 2.0);
+  mesh7.position.set(-32, 4.2, 35);
+  mesh7.rotateY(Math.PI / 2);
+  mesh7.rotateX(-Math.PI / 2);
+  scene.add(mesh7);
+});
+
+// --- carga y movimiento del robot (mesh9) ---
+let mesh9 = null; // se declara antes
+// Cargar el STL
+const loaderSTL9 = new STLLoader();
+loaderSTL9.load("SKM_Robot.stl", function (geometry) {
+  const material9 = new THREE.MeshPhongMaterial({ color: "#00BFFF" });
+
+  mesh9 = new THREE.Mesh(geometry, material9);
+  mesh9.scale.set(0.5, 0.5, 0.5);
+  mesh9.position.set(-5, 2.2, 25);
+
+  mesh9.rotation.x = -Math.PI / 2;
+  mesh9.rotation.z = Math.PI;
+
+  scene.add(mesh9);
+});
+
+//evento teclado (solo flechas)
+document.addEventListener("keydown", (e) => {
+  if (!mesh9) return; // evita errores si aún no cargó
+
+  const speed = 0.8;//1 , (2 se mueve mas espacios)
+
+  switch (e.key) {//switch para que sea mas ordenado (util cuando hay muchos)
+    case "ArrowLeft":
+      if(!juegoPausado)
+      mesh9.position.x -= speed;
+      break;
+    case "ArrowRight":
+      if(!juegoPausado)
+      mesh9.position.x += speed;
+      break;
+    case "ArrowUp":
+      if(!juegoPausado)
+      mesh9.position.y += speed;
+      break;
+    case "ArrowDown":
+      if(!juegoPausado)
+      mesh9.position.y -= speed;
+      break;
+  }
+});
+
+//SKM_Robot
+// Modelos GLTF
+//asi no se repite el bloque de cod por cada mod
+const gltfModels = [
+  { file: "machine.glb", scale: [1, 1, 1], position: [-30, 1, 18] },
+  { file: "STREET.glb", scale: [3, 3, 3], position: [-20, 3, -18], rotationY: -Math.PI / 2 },
+ // { file: "station.glb", scale: [1, 1, 1], position: [25, 0, 25], rotationX: -Math.PI / 2,rotationY: Math.PI / 2 },
+  { file: "city.glb", scale: [4.5, 4.5, 4.5], position: [18, -0.98, -35] },
+  { file: "hotel.glb", scale: [11.5, 11.5, 11.5], position: [18, -0.98, 20] },//18, -0.98, 0
+  { file: "robot.glb", scale: [3.9, 3.9, 3.9], position: [8, 1.8, 20] },
+  { file: "cilindro.glb", scale: [0.03, 0.03, 0.03], position: [7, 0, 30],rotationZ: -Math.PI / 2  },
+  { file: "char.glb", scale: [2.8, 2.8, 2.8], position: [-18, 1.5, 20] }
+];
+
+//loaders
+const loaderGLB = new GLTFLoader();
+gltfModels.forEach(model => {
+  loaderGLB.load(model.file, (gltf) => {
+    const mesh = gltf.scene;
+    mesh.scale.set(...model.scale);
+    mesh.position.set(...model.position);
+    if (model.rotationY) mesh.rotation.y = model.rotationY;
+    scene.add(mesh);
+  });
+});
 
 // Animación
 function animate() {
