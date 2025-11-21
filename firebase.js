@@ -1,9 +1,4 @@
 
-// level.js - versión con obstáculos GLB y hitboxes ajustables
-import * as THREE from "./three.module.js";
-import { OrbitControls } from "./OrbitControls.js";
-import { GLTFLoader } from "./GLTFLoader.js";
-
 // Import the functions you need from the SDKs you need
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-app.js";//6
   // TODO: Add SDKs for Firebase products that you want to use
