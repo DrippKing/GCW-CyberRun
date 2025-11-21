@@ -46,7 +46,7 @@
           <button class="btn" onclick="abrirRanking()">Ranking</button>
           <button id="btnTransmisiones" class="btn">Transmisiones</button>
           <button class="btn" onclick="abrirOpciones()">Opciones</button>
-          <button class="btn salir" onclick="cerrarJuego()">Salir</button>
+          <button id="btn-salir" class="btn salir">Salir</button>
         </div>
       </div>
 

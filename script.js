@@ -6,12 +6,14 @@ const sonido_btn_Click = document.getElementById("sonido-btn_Click");
 // BOTONES
 const botones = document.querySelectorAll('.btn');
 
+
 // OPCIONES --------------------
 const menuOpciones = document.getElementById("menu-opciones");
 const botonesMenu = document.querySelectorAll(".menu > .btn");
 const btnRegresar = document.getElementById("btn-regresar");
 const sliderMusica = document.getElementById("volumen-musica");
 const sliderSonidos = document.getElementById("volumen-sonidos");
+
 
 // LOGIN -----------------------
 const LoginBtn = document.getElementById("navbar-login");
@@ -22,10 +24,12 @@ const inputUsuario = document.getElementById("login-usuario");
 const inputPassword = document.getElementById("login-password");
 const loginErrorMsg = document.getElementById("login-error");
 
+
 // RANKING ---------------------
 const menuRanking = document.getElementById("menu-ranking");
 const btnRankingRegresar = document.getElementById("btn-ranking-regresar");
 const listaRanking = document.getElementById("lista-ranking");
+
 
 // TIENDA ----------------------
 const menuTienda = document.getElementById("menu-tienda");
@@ -42,10 +46,12 @@ const cantidadDatos = document.getElementById("cantidad-datos");
 
 let datosJugador = 2500;
 
+
 // NIVEL Y DIFICULTAD -----------
 const menuNiveles = document.getElementById("menu-niveles-single");
 const menuDificultad = document.getElementById("menu-dificultad");
 const btnDificultadRegresar = document.getElementById("btn-dificultad-regresar");
+
 
 let nivelSeleccionado = null;
 let dificultadSeleccionada = null;
@@ -64,6 +70,9 @@ const mensajeTransmision = document.getElementById("mensajeTransmision");
 const estadoTransmision = document.getElementById("estadoTransmision");
 
 const WEBHOOK_URL = "https://discord.com/api/webhooks/1427773296291745925/uD5ClVLf_UjT6zsZ5yXxtXIgPP58KN2OMgS9FH7jKQk-HCRdaFjV-c27wd88o6I73KGO";
+
+// SALIR -----------------------
+const btnSalir = document.getElementById("btn-salir");
 
 // REGISTRO --------------------
 const menuRegister = document.getElementById('menu-register');
@@ -545,4 +554,25 @@ btnSubmitRegister.addEventListener('click', async () => {
         console.error('Error en la petición de registro:', error);
         registerErrorMsg.textContent = 'No se pudo conectar con el servidor. Inténtalo más tarde.';
     }
+});
+
+// =================================================================================================
+// LÓGICA DE SALIDA
+// =================================================================================================
+
+btnSalir.addEventListener('click', () => {
+  reproducirSonidoClick();
+
+  // 1. Añadimos la clase que activa la animación de fundido a negro.
+  document.body.classList.add('fade-out-active');
+
+  // 2. Esperamos a que la animación termine (500ms) antes de actuar.
+  setTimeout(() => {
+    // 3. Intentamos cerrar la ventana.
+    window.close();
+
+    // 4. Como fallback, si no se cierra, redirigimos a una página en blanco.
+    // Esto da la sensación de que la aplicación ha terminado.
+    window.location.href = 'about:blank';
+  }, 3000); // 500ms, igual que la duración de la animación CSS.
 });

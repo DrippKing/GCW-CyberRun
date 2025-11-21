@@ -700,4 +700,19 @@ h2.titulo-juego{
 .ranking-score {
   color: #00ff9d; /* Un color diferente para los puntos */
 }
+
+/* Animación para la salida del juego */
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    background-color: #000; /* Fondo se vuelve negro */
+  }
+}
+
+body.fade-out-active {
+  animation: fadeOut 3s ease-out forwards;
+}
 }
