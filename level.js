@@ -75,6 +75,7 @@ window.addEventListener("keydown", iniciarMusicaJuego, { once: true });
 const puntosElement = document.getElementById("puntos");
 let puntos = 0;
 
+/*
 window.addEventListener("keydown", (e) => {
   if (e.code === "Space" && !juegoPausado) {
     puntos++;
@@ -82,7 +83,7 @@ window.addEventListener("keydown", (e) => {
     sonidoHover.currentTime = 0;
     sonidoHover.play().catch(() => {});
   }
-});
+});*/
 
 
 // ============================
@@ -218,18 +219,47 @@ loaderSTL6.load("car.stl", function (geometry) {
   scene.add(mesh7);
 });
 
+// --- carga y movimiento del robot (mesh9) ---
+let mesh9 = null; // se declara antes
+// Cargar el STL
 const loaderSTL9 = new STLLoader();
 loaderSTL9.load("SKM_Robot.stl", function (geometry) {
   const material9 = new THREE.MeshPhongMaterial({ color: "#00BFFF" });
-  const mesh9 = new THREE.Mesh(geometry, material9);
+
+  mesh9 = new THREE.Mesh(geometry, material9);
   mesh9.scale.set(0.5, 0.5, 0.5);
   mesh9.position.set(-5, 2.2, 25);
- //   mesh9.rotateX(Math.PI / 2);
- mesh9.rotation.x = -Math.PI / 2; //a vertical
-mesh9.rotation.z = Math.PI; // 
+
+  mesh9.rotation.x = -Math.PI / 2;
+  mesh9.rotation.z = Math.PI;
 
   scene.add(mesh9);
 });
+
+//evento teclado (solo flechas)
+document.addEventListener("keydown", (e) => {
+  if (!mesh9) return; // evita errores si aún no cargó
+
+  const speed = 0.8;//1 , (2 se mueve mas espacios)
+
+  switch (e.key) {//switch para que sea mas ordenado (util cuando hay muchos)
+    case "ArrowLeft":
+      mesh9.position.x -= speed;
+      break;
+    case "ArrowRight":
+      mesh9.position.x += speed;
+      break;
+    case "ArrowUp":
+      mesh9.position.y += speed;
+      break;
+    case "ArrowDown":
+      mesh9.position.y -= speed;
+      break;
+  }
+});
+
+
+
 
 
 //SKM_Robot
