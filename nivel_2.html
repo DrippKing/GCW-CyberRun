@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Cyber Run: Escape del Mainframe</title>
+    <link rel="stylesheet" href="level2.css">
+    <style>
+      /* Asegúrate de que el contenedor ocupe toda la pantalla */
+      html,body { height:100%; margin:0; padding:0; overflow:hidden; font-family: Arial, sans-serif; }
+      #three-container { position:fixed; inset:0; z-index:0; }
+      /* HUD sobre la escena */
+      #contador { position: fixed; left: 16px; top: 12px; z-index: 5; background: rgba(0,0,0,0.4); color: #fff; padding: 6px 10px; border-radius: 6px; font-weight: bold; }
+      #puntos { position: fixed; left: 16px; top: 52px; z-index: 5; background: rgba(0,0,0,0.4); color: #fff; padding: 6px 10px; border-radius: 6px; }
+      .btn { cursor:pointer; }
+      .pausa-btn { position: fixed; right: 16px; top: 12px; z-index: 5; padding: 8px 12px; border-radius: 6px; background: rgba(0,0,0,0.45); color:#fff; border:none; }
+      .menu-pausa { position: fixed; inset: 50% auto auto 50%; transform: translate(-50%,-50%); z-index: 6; background: rgba(10,10,10,0.95); color: #fff; padding: 22px; border-radius: 10px; display:flex; flex-direction:column; gap: 10px; align-items:center; min-width:220px; }
+      .menu-pausa.oculto { display: none; }
+      .btn { padding: 8px 12px; border-radius:6px; background:#222; color:#fff; border:none; }
+      .btn.salir { background:#800; }
+      #game-over { position: fixed; left:50%; top:40%; transform: translate(-50%,-50%); z-index: 7; background: rgba(0,0,0,0.85); color:#fff; padding:18px; border-radius:10px; display:none; text-align:center; }
+    </style>
+</head>
+<body>
+
+   <!-- Contador para distancia en la esquina superior izquierda -->
+<div id="contador">0</div>
+
+<!-- Botón de pausa flotante -->
+<button id="btn-pausa" class="btn pausa-btn">⏸ Pausa</button>
+
+<!-- Menú de pausa oculto -->
+<div id="menu-pausa" class="menu-pausa oculto">
+  <h2>Juego en Pausa</h2>
+  <button id="btn-continuar" class="btn">Continuar</button>
+  <button id="btn-reiniciar" class="btn">Reiniciar</button>
+  <button id="btn-menu" class="btn salir">Menú Principal</button>
+</div>
+
+<!-- Panel Game Over -->
+<div id="game-over">
+  <h2>GAME OVER</h2>
+  <p id="final-score">Puntuación: 0</p>
+  <button id="btn-reiniciar-go" class="btn">Reiniciar</button>
+  <button id="btn-menu-go" class="btn salir">Menú</button>
+</div>
+
+<!-- Música de fondo -->
+<audio id="musica-juego" src="CODIFIED-INJUSTICE.mp3" loop></audio>
+<!-- Sonidos de botones -->
+<audio id="sonido-hover" src="Button-Sound.mp3"></audio>
+<audio id="sonido-click" src="Select-button-sound(Fixed).mp3"></audio>
+<!-- Sonido de salto / choque opcional -->
+<audio id="sonido-salto" src="jump.wav"></audio>
+<audio id="sonido-choque" src="crash.wav"></audio>
+
+<!-- contenedor para la escena 3D -->
+<div id="three-container"></div>
+
+<script type="module" src="level2.js"></script>
+</body>
+</html>

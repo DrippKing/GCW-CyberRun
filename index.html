@@ -7,26 +7,23 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div id="contenedor-principal">
+  <div id="contenedor-principal">  
     <!-- Música y audios -->
     <audio id="musica-fondo" loop></audio>
     <audio id="sonido-btn_Hover" src="Button-Sound.mp3"></audio>
     <audio id="sonido-btn_Click" src="Select-button-sound(Fixed).mp3"></audio>
 
-    <!-- Pantalla de Inicio************************************************************************************** -->
+    <!-- Pantalla de Inicio -->
     <section id="pantalla-inicio" class="pantalla activa">
       <div class="contenedor">
         <div id="titulos">
-          <h1 class="titulo-juego">Cyber Run<h1>
+          <h1 class="titulo-juego">Cyber Run</h1>
           <h2 class="titulo-juego">Escape from the Mainframe</h2> 
         </div>
+
         <div class="menu">
           <button class="btn" onclick="seleccionarNivel()">SinglePlayer</button>
-         <button class="btn" onclick="seleccionarNivel('multijugador')">Multiplayer</button>
-
-<!--
-  <button class="btn" onclick="cambiarPantalla('multijugador')">Multiplayer</button>
-        -->
+          <button class="btn" onclick="seleccionarNivel('multijugador')">Multiplayer</button>
           <button class="btn" onclick="abrirTienda()">Tienda</button>
           <button class="btn" onclick="abrirRanking()">Ranking</button>
           <button id="btnTransmisiones" class="btn">Transmisiones</button>
@@ -34,7 +31,8 @@
           <button class="btn salir" onclick="cerrarJuego()">Salir</button>
         </div>
       </div>
-      <!-- Contenedor de Opciones************************************************************************************** -->
+
+      <!-- Contenedor de Opciones -->
       <div id="menu-opciones" class="menu-opciones oculto">
         <h2>Opciones</h2>
         <div class="opcion">
@@ -46,125 +44,139 @@
           <input type="range" id="volumen-sonidos" min="0" max="1" step="0.01" value="1">
         </div>
         <button class="btn" id="btn-regresar">Regresar</button>
+      </div>
     </section>
-    <!-- Contenedor de selector de niveles SinglePlayer ***************************************************************** -->
+
+    <!-- Contenedor de selector de niveles SinglePlayer -->
     <div id="menu-niveles-single" class="menu-niveles oculto">
-  <h2>Selecciona un Nivel</h2>
-  <div class="niveles">
-   <button class="btn nivel" onclick="iniciarNivel(1, 'single')">Nivel 1</button>
-<button class="btn nivel" onclick="iniciarNivel(2, 'single')">Nivel 2</button>
-<button class="btn nivel" onclick="iniciarNivel(3, 'single')">Nivel 3</button>
+      <h2>Selecciona un Nivel</h2>
 
-  </div>
-  <button class="btn" id="btn-niveles-regresar-single">Regresar</button>
-</div>
-
-   <!-- Contenedor de selector de niveles multijugador ***************************************************************** -->
-  <div id="menu-niveles-multi" class="menu-niveles oculto">
-  <h2>Selecciona un Nivel Multiplayer</h2>
-  <div class="niveles">
-   <button class="btn nivel" onclick="iniciarNivel(1, 'multi')">Nivel 1</button>
-<button class="btn nivel" onclick="iniciarNivel(2, 'multi')">Nivel 2</button>
-<button class="btn nivel" onclick="iniciarNivel(3, 'multi')">Nivel 3</button>
-
-  </div>
-  <button class="btn" id="btn-niveles-regresar-multi">Regresar</button>
-</div>
-
-<!-- Contenedor de Ranking **********************************************************************************************-->
- <div id="menu-ranking" class="menu-ranking oculto">
-  <h2>Ranking</h2>
-  <ul id="lista-ranking">
-    <li>1. JugadorPro - 15000 pts</li>
-    <li>2. NeoRunner - 12340 pts</li>
-    <li>3. CyberX - 9870 pts</li>
-    <li>4. ByteMaster - 8650 pts</li>
-    <li>5. PixelHero - 7540 pts</li>
-  </ul>
- <button class="btn" id="btn-ranking-regresar">Regresar</button>
-  </div>
-
-  <!-- Contenedor de Tienda ************************************************************************************************-->
-<div id="menu-tienda" class="menu-tienda oculto">
-  <h2>Tienda de Perks</h2>
-  <p class="datos-total">Datos disponibles: <span id="cantidad-datos">2500</span></p>
-
-  <!-- Lista scrollable de perks -->
-  <div class="lista-perks">
-    <!-- Perk bloqueado -->
-    <div class="perk bloqueado" data-nombre="Salto Extra" data-descripcion="Permite realizar un doble salto." data-precio="500">
-      <div class="imagen-perk">
-        <img src="perk-salto.png" alt="Salto Extra">
-        <div class="candado">🔒</div>
+      <div class="niveles">
+        <button class="btn nivel" onclick="iniciarNivel(1, 'single')">Nivel 1</button>
+        <button class="btn nivel" onclick="iniciarNivel(2, 'single')">Nivel 2</button>
+        <button class="btn nivel" onclick="iniciarNivel(3, 'single')">Nivel 3</button>
       </div>
-      <p>Salto Extra</p>
-    </div>
 
-    <!-- Perk desbloqueado -->
-    <div class="perk desbloqueado" data-nombre="Velocidad+" data-descripcion="Aumenta la velocidad de movimiento en un 20%.">
-      <div class="imagen-perk">
-        <img src="perk-velocidad.png" alt="Velocidad+">
+      <!-- Botón regresar a menú principal (faltaba) -->
+      <div style="margin-top:16px;">
+        <button class="btn" id="btn-niveles-regresar">Regresar</button>
       </div>
-      <p>Velocidad+</p>
     </div>
 
-    <!-- Otro perk bloqueado -->
-    <div class="perk bloqueado" data-nombre="Escudo Energético" data-descripcion="Absorbe el primer golpe recibido." data-precio="1200">
-      <div class="imagen-perk">
-        <img src="perk-escudo.png" alt="Escudo Energético">
-        <div class="candado">🔒</div>
+    <!-- Contenedor de selección de dificultad -->
+    <div id="menu-dificultad" class="menu-opciones oculto">
+      <h2>Selecciona la Dificultad</h2>
+      <div class="opcion">
+        <p>Elige cómo quieres jugar este nivel:</p>
       </div>
-      <p>Escudo Energético</p>
-    </div>
-  </div>
 
-  <button class="btn" id="btn-tienda-regresar">Regresar</button>
-</div>
+      <div class="niveles">
+        <button class="btn dificultad" onclick="iniciarNivelConDificultad('normal')">Normal</button>
+        <button class="btn dificultad" onclick="iniciarNivelConDificultad('dificil')">Difícil</button>
+      </div>
 
-<!-- Contenedor de información de perk -->
-<div id="info-perk" class="info-perk oculto">
-  <div class="contenido-info">
-    <span id="cerrar-info" class="cerrar">✖</span>
-    <div class="imagen-perk-grande">
-      <img id="info-imagen" src="" alt="Perk">
-    </div>
-    <h3 id="info-nombre"></h3>
-    <p id="info-descripcion"></p>
-    <p id="info-precio"></p>
-    <button id="btn-comprar" class="btn oculto">Comprar</button>
-  </div>
-</div>
+      <hr style="margin: 20px 0; border-color: #00ffe0;">
 
-<!-- Contenedor de la Terminal de Transmisiones -->
-<div id="contenedor-transmisiones" class="contenedor-oculto">
-  <div class="transmisiones-caja">
-    <h2>Terminal de Transmisiones</h2>
-    <p>Envía una señal a la red global 🌐</p>
+      <!-- Submenú de selección de glitch -->
+      <h3>Selecciona un Glitch (opcional)</h3>
+      <p style="font-size: 0.9rem; color: #aaa;">Solo puedes usar un glitch por run.</p>
 
-    <textarea id="mensajeTransmision" placeholder="Escribe tu mensaje aquí..." maxlength="200"></textarea>
+      <div id="glitch-lista" class="lista-glitches">
+        <!-- Los glitches desbloqueados se insertarán aquí dinámicamente -->
+      </div>
 
-    <div class="botones-transmision">
-      <button id="btnCerrarTransmision" class="btn">Volver</button>
-      <button id="btnEnviarTransmision" class="btn">Enviar transmisión</button>
+      <p id="glitch-seleccionado" style="margin-top:10px; color:#00ffe0;">Ningún glitch seleccionado</p>
+
+      <button class="btn" id="btn-dificultad-regresar">Regresar</button>
     </div>
 
-    <p id="estadoTransmision" class="estado-transmision"></p>
-  </div>
-</div>
+    <!-- Contenedor de Ranking -->
+    <div id="menu-ranking" class="menu-ranking oculto">
+      <h2>Ranking</h2>
+      <ul id="lista-ranking">
+        <li>1. JugadorPro - 15000 pts</li>
+        <li>2. NeoRunner - 12340 pts</li>
+        <li>3. CyberX - 9870 pts</li>
+        <li>4. ByteMaster - 8650 pts</li>
+        <li>5. PixelHero - 7540 pts</li>
+      </ul>
+      <button class="btn" id="btn-ranking-regresar">Regresar</button>
+    </div>
 
+    <!-- Contenedor de Tienda -->
+    <div id="menu-tienda" class="menu-tienda oculto">
+      <h2>Tienda de Glitches</h2>
+      <p class="datos-total">Datos disponibles: <span id="cantidad-datos">2500</span></p>
 
+      <!-- Lista scrollable de glitches -->
+      <div class="lista-perks">
+        <!-- Glitch bloqueado -->
+        <div class="perk bloqueado" data-nombre="Fase Fantasma" data-descripcion="Te permite atravesar un obstáculo una vez sin morir." data-precio="1200">
+          <div class="imagen-perk">
+            <img src="glitch-fantasma.png" alt="Fase Fantasma">
+            <div class="candado">🔒</div>
+          </div>
+          <p>Fase Fantasma</p>
+        </div>
 
- <!--Div Final-->
-</div>
+        <!-- Glitch desbloqueado -->
+        <div class="perk desbloqueado" data-nombre="Overclock Neural" data-descripcion="Aumenta tu velocidad de procesamiento. Corre 30% más rápido.">
+          <div class="imagen-perk">
+            <img src="glitch-overclock.png" alt="Overclock Neural">
+          </div>
+          <p>Overclock Neural</p>
+        </div>
+
+        <!-- Glitch bloqueado -->
+        <div class="perk bloqueado" data-nombre="Reescritura del Código" data-descripcion="Cuando mueres, tu código se repara y reapareces una vez." data-precio="2000">
+          <div class="imagen-perk">
+            <img src="glitch-rewrite.png" alt="Reescritura del Código">
+            <div class="candado">🔒</div>
+          </div>
+          <p>Reescritura del Código</p>
+        </div>
+      </div>
+
+      <!-- Ventana de información del perk -->
+      <div id="info-perk" class="info-perk oculto">
+        <div class="contenido-info">
+          <button id="cerrar-info" class="btn-cerrar">✖</button>
+          <h3 id="info-nombre">Nombre del Glitch</h3>
+          <img id="info-imagen" src="" alt="Imagen del glitch">
+          <p id="info-descripcion">Descripción del glitch...</p>
+          <p id="info-precio">Precio: 0 datos</p>
+          <button id="btn-comprar" class="btn">Comprar</button>
+        </div>
+      </div>
+
+      <button class="btn" id="btn-tienda-regresar">Regresar</button>
+    </div>
+
+    <!-- Contenedor de la Terminal de Transmisiones -->
+    <div id="contenedor-transmisiones" class="contenedor-oculto">
+      <div class="transmisiones-caja">
+        <h2>Terminal de Transmisiones</h2>
+        <p>Envía una señal a la red global 🌐</p>
+
+        <textarea id="mensajeTransmision" placeholder="Escribe tu mensaje aquí..." maxlength="200"></textarea>
+
+        <div class="botones-transmision">
+          <button id="btnCerrarTransmision" class="btn">Volver</button>
+          <button id="btnEnviarTransmision" class="btn">Enviar transmisión</button>
+        </div>
+
+        <p id="estadoTransmision" class="estado-transmision"></p>
+      </div>
+    </div>
+
+  </div> <!-- Div contenedor-principal -->
 
   <video muted autoplay loop id="video-bg">
-   <source src="./CyberVideo.mp4" type="video/mp4">
+    <source src="./CyberVideo.mp4" type="video/mp4">
   </video>
 
   <div class="filtro-negro"></div>
 
-
   <script src="script.js"></script>
 </body>
 </html>
- 
