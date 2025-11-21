@@ -1,11 +1,11 @@
 // INTERFAZ Y LÓGICA JUEGO
 
-// Elementos del DOM
+
 import * as THREE from "./three.module.js";
 import { OrbitControls } from "./OrbitControls.js";
 import { STLLoader } from "./STLLoader.js";
 import { GLTFLoader } from "./GLTFLoader.js";
-
+// Elementos del DOM
 const btnPausa = document.getElementById("btn-pausa");
 const menuPausa = document.getElementById("menu-pausa");
 const btnContinuar = document.getElementById("btn-continuar");
@@ -154,18 +154,17 @@ loaderSTL.load("obs.stl", function (geometry) {
   mesh.rotateX(Math.PI / 2);
   scene.add(mesh);
 });
-const textureLoader5 = new THREE.TextureLoader();
-textureLoader5.load("Texture_Metal.png", function (texture) {
-  const material4 = new THREE.MeshPhongMaterial({ map: texture });
-  const loaderSTL3 = new STLLoader();
-  loaderSTL3.load("cubo.stl", function (geometry) {
-    const mesh6 = new THREE.Mesh(geometry, material4);
-    mesh6.scale.set(0.5, 0.5, 0.5);
-    mesh6.position.set(0, 5, 20);
-    mesh6.rotateX(-Math.PI / 2);
-    scene.add(mesh6);
-  });
-});
+
+
+const textureLoader5 = new THREE.TextureLoader(); 
+textureLoader5.load("Texture_Metal.png", function (texture) 
+{ const material4 = new THREE.MeshPhongMaterial({ map: texture }); 
+const loaderSTL3 = new STLLoader(); loaderSTL3.load("cubo.stl", function (geometry) { 
+    const mesh6 = new THREE.Mesh(geometry, material4); mesh6.scale.set(1.5, 1.5, 1.5);//0.5, 0.5, 0.5 
+     mesh6.position.set(0, 1, 20);//0, 5, 20 
+     mesh6.rotateX(-Math.PI / 2); 
+     scene.add(mesh6); }); })
+
 
 const loaderSTL6 = new STLLoader();
 loaderSTL6.load("car.stl", function (geometry) {
@@ -181,18 +180,28 @@ loaderSTL6.load("car.stl", function (geometry) {
 });
 
 // --- carga y movimiento del robot (mesh9) ---
-let mesh9 = null; // se declara antes
+let mesh9 = null;
+
+
+
+// Control del salto
+let jumpingUp = false;
+let fallingDown = false;
+let jumpSpeed = 1;   // velocidad de subida y bajada
+let maxJumpHeight = 8;  // altura máxima del salto
+let groundY = 2.2;      // altura inicial del robot
+
 // Cargar el STL
 const loaderSTL9 = new STLLoader();
 loaderSTL9.load("SKM_Robot.stl", function (geometry) {
   const material9 = new THREE.MeshPhongMaterial({ color: "#00BFFF" });
 
   mesh9 = new THREE.Mesh(geometry, material9);
-  mesh9.scale.set(0.5, 0.5, 0.5);
-  mesh9.position.set(-5, 2.2, 25);
+  mesh9.scale.set(0.5, 0.5, 0.5);//0.5, 0.5, 0.5
+  mesh9.position.set(0, 2.2, 25);
 
   mesh9.rotation.x = -Math.PI / 2;
-  mesh9.rotation.z = Math.PI;
+  mesh9.rotation.z = -Math.PI/32;
 
   scene.add(mesh9);
 });
@@ -201,7 +210,7 @@ loaderSTL9.load("SKM_Robot.stl", function (geometry) {
 document.addEventListener("keydown", (e) => {
   if (!mesh9) return; // evita errores si aún no cargó
 
-  const speed = 0.8;//1 , (2 se mueve mas espacios)
+  const speed = 1;//1 , (2 se mueve mas espacios)
 
   switch (e.key) {//switch para que sea mas ordenado (util cuando hay muchos)
     case "ArrowLeft":
@@ -213,9 +222,11 @@ document.addEventListener("keydown", (e) => {
       mesh9.position.x += speed;
       break;
     case "ArrowUp":
-      if(!juegoPausado)
-      mesh9.position.y += speed;
-      break;
+  if (!juegoPausado && !jumpingUp && !fallingDown && mesh9) {
+    jumpingUp = true; // comienza a subir
+  }
+  break;
+
     case "ArrowDown":
       if(!juegoPausado)
       mesh9.position.y -= speed;
@@ -251,10 +262,34 @@ gltfModels.forEach(model => {
 
 // Animación
 function animate() {
-  if (pisoTexture && !juegoPausado) {
+  if (pisoTexture && !juegoPausado) {//mueve textura piso
     pisoTexture.offset.y += 0.01;
   }
+
+   // --- SALTO: SUBIR ---
+  if (jumpingUp && mesh9) {
+    mesh9.position.y += jumpSpeed;
+
+    if (mesh9.position.y >= maxJumpHeight) {
+      jumpingUp = false;
+      fallingDown = true;
+    }
+  }
+
+  // --- SALTO: BAJAR ---
+  if (fallingDown && mesh9) {
+    mesh9.position.y -= jumpSpeed;
+
+    if (mesh9.position.y <= groundY) {
+      mesh9.position.y = groundY;
+      fallingDown = false;
+    }
+  }
+
+
+
   renderer.render(scene, camera);
   requestAnimationFrame(animate);
 }
 animate();
+
