@@ -244,15 +244,19 @@ document.addEventListener("keydown", (e) => {
 
   switch (e.key) {//switch para que sea mas ordenado (util cuando hay muchos)
     case "ArrowLeft":
+      if(!juegoPausado)
       mesh9.position.x -= speed;
       break;
     case "ArrowRight":
+      if(!juegoPausado)
       mesh9.position.x += speed;
       break;
     case "ArrowUp":
+      if(!juegoPausado)
       mesh9.position.y += speed;
       break;
     case "ArrowDown":
+      if(!juegoPausado)
       mesh9.position.y -= speed;
       break;
   }
