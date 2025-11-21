@@ -352,6 +352,7 @@ function checkCollisions() {
 }
 
 //evento teclado (solo flechas)
+/*
 document.addEventListener("keydown", (e) => {
   if (!mesh9) return; // evita errores si aún no cargó
 
@@ -375,7 +376,7 @@ document.addEventListener("keydown", (e) => {
       mesh9.position.y -= speed;
       break;
   }
-});
+});*/
 
 
 

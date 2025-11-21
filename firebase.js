@@ -1,3 +1,9 @@
+
+// level.js - versión con obstáculos GLB y hitboxes ajustables
+import * as THREE from "./three.module.js";
+import { OrbitControls } from "./OrbitControls.js";
+import { GLTFLoader } from "./GLTFLoader.js";
+
 // Import the functions you need from the SDKs you need
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-app.js";//6
   // TODO: Add SDKs for Firebase products that you want to use
@@ -9,6 +15,13 @@
     signInWithPopup, 
     GoogleAuthProvider 
   } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-auth.js";//5
+
+  import { getDatabase, 
+    ref, 
+    onValue,
+    set 
+  } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-database.js";
+
 
   // Your web app's Firebase configuration
   const firebaseConfig = {
@@ -25,9 +38,12 @@
   const app = initializeApp(firebaseConfig);
   const provider = new GoogleAuthProvider();
   const auth = getAuth();
+  const db = getDatabase();//instacnia BD
 
   const btnLogin = document. getElementById("btn-login");
   const btnLogout = document. getElementById("btn-logout");
+
+  let currentUser;//usuario actaul
 
 async function login(){
   await signInWithPopup(auth, provider)
@@ -36,8 +52,8 @@ async function login(){
     const credential = GoogleAuthProvider.credentialFromResult(result);
     const token = credential.accessToken;
     // The signed-in user info.
-    const user = result.user;
-    console.log(user);
+    currentUser  = result.user;
+  writeUserData(currentUser.uid, 0, 0);
     // IdP data available using getAdditionalUserInfo(result)
     // ...
   }).catch((error) => {
@@ -63,3 +79,38 @@ btnLogout.addEventListener("click", async() =>{
   console.log('An error happened');
 });
 });
+
+//leer
+const starCountRef = ref(db, 'jugadores');//ej para adaptarse
+//bd, a donde se dirgie
+onValue(starCountRef, (snapshot) => {
+  const data = snapshot.val();//valores
+ // updateStarCount(postElement, data);
+ console.log(data);
+
+ Object.entries(data).forEach(([key, value])=> {
+console.log(`${key} ${value}`);// a 5,  b 7, c 9
+
+const jugador=scene.getObjectByName(key);
+if(!jugador){
+    /*  const gltfLoader = new GLTFLoader();
+      gltfLoader.load("Robot.glb", (gltf) => {
+        const model = gltf.scene;
+        model.scale.set(0.6, 0.6, 0.6);
+        model.position.set(playerMesh.position.x, playerMesh.position.y - 1.1, playerMesh.position.z);
+        model.rotation.y = Math.PI;
+        scene.add(model);
+        }*/
+      }
+  });
+});
+
+
+//escribir
+function writeUserData(userId, positionX, positionZ) {
+  //function writeUserData(userId, name, email, imageUrl) {
+  set(ref(db, 'jugadores/' + userId), {
+    x: positionX,
+    z: positionZ,
+  });
+}
