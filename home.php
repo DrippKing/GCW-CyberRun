@@ -13,7 +13,7 @@
     <div id="navbar">      
       <div class="user-info">
         <?php if (isset($_SESSION['user'])): ?>
-            <img src="avatar-default.png" alt="Avatar" id="navbar-avatar">
+            <img src="avatar-default.jpg" alt="Avatar" id="navbar-avatar">
             <span id="navbar-username"><?php echo htmlspecialchars($_SESSION['user']['u_name']); ?></span>
         <?php endif; ?>
       </div>
@@ -169,22 +169,32 @@
 
 
               // --- OBTENER Y MOSTRAR BUFFS ---
-              $stmt = $pdo->prepare("SELECT nombre, descripcion, price, picture FROM buffs");
+              // 1. Obtener los IDs de los buffs que el usuario ya tiene
+              $unlocked_buffs_ids = [];
+              if (isset($_SESSION['user']) && isset($_SESSION['user']['id_user_PK'])) {
+                  $stmt_unlocked = $pdo->prepare("SELECT id_buff_FK FROM `users-buffs` WHERE id_user_FK = ?");
+                  $stmt_unlocked->execute([$_SESSION['user']['id_user_PK']]);
+                  $unlocked_buffs_ids = $stmt_unlocked->fetchAll(PDO::FETCH_COLUMN, 0); // Obtiene solo la columna id_buff_FK
+              }
+
+              // 2. Obtener todos los buffs de la tienda
+              $stmt = $pdo->prepare("SELECT id_buff_PK, nombre, descripcion, price, picture FROM buffs");
               $stmt->execute();
               $buffs = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
               foreach ($buffs as $buff) {
+                  $id_buff = $buff['id_buff_PK'];
                   $nombre = htmlspecialchars($buff['nombre']);
                   $descripcion = htmlspecialchars($buff['descripcion']);
                   $precio = htmlspecialchars($buff['price']);
                   $imagen = 'data:image/jpeg;base64,' . base64_encode($buff['picture']);
 
-                  // AQUI SE ASUME QUE TODOS LOS BUFFS ESTAN BLOQUEADOS INICIALMENTE
-                  // LA LOGICA PARA DETERMINAR SI ESTA DESBLOQUEADO DEBERIA IR AQUI
-                  $estado = 'bloqueado'; 
-                  $candado = '<div class="candado">🔒</div>';
+                  // 3. Determinar si el buff está desbloqueado
+                  $esDesbloqueado = in_array($id_buff, $unlocked_buffs_ids);
+                  $estado = $esDesbloqueado ? 'desbloqueado' : 'bloqueado';
+                  $candado = $esDesbloqueado ? '' : '<div class="candado">🔒</div>';
 
-                  echo "<div class='perk {$estado}' data-nombre='{$nombre}' data-descripcion='{$descripcion}' data-precio='{$precio}'>";
+                  echo "<div class='perk {$estado}' data-id='{$id_buff}' data-nombre='{$nombre}' data-descripcion='{$descripcion}' data-precio='{$precio}'>";
                   echo "  <div class='imagen-perk'>";
                   echo "    <img src='{$imagen}' alt='{$nombre}'>";
                   echo "    {$candado}";

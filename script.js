@@ -302,10 +302,11 @@ btnTiendaRegresar.addEventListener("click", () => {
 
 listaPerks.forEach(perk => {
   perk.addEventListener("click", () => {
+    const id = perk.dataset.id;
     const nombre = perk.dataset.nombre;
     const descripcion = perk.dataset.descripcion;
     const desbloqueado = perk.classList.contains("desbloqueado");
-    const precio = parseInt(perk.dataset.precio || 0);
+    const precio = perk.dataset.precio;
     const imagen = perk.querySelector("img").src;
 
     infoNombre.textContent = nombre;
@@ -318,7 +319,7 @@ listaPerks.forEach(perk => {
     } else {
       infoPrecio.textContent = `Precio: ${precio} datos`;
       btnComprar.classList.remove("oculto");
-      btnComprar.onclick = () => confirmarCompra(perk, precio);
+      btnComprar.onclick = () => confirmarCompra(id, nombre, precio);
     }
 
     infoPerk.classList.remove("oculto");
@@ -329,27 +330,46 @@ cerrarInfo.addEventListener("click", () => {
   infoPerk.classList.add("oculto");
 });
 
-function confirmarCompra(perk, precio) {
-  if (confirm(`¿Deseas comprar "${perk.dataset.nombre}" por ${precio} datos?`)) {
-    comprarPerk(perk, precio);
+function confirmarCompra(id, nombre, precio) {
+  if (confirm(`¿Deseas comprar "${nombre}" por ${precio} datos?`)) {
+    comprarPerk(id);
   }
 }
 
-function comprarPerk(perk, precio) {
-  if (datosJugador >= precio) {
-    datosJugador -= precio;
-    cantidadDatos.textContent = datosJugador;
+async function comprarPerk(buffId) {
+  try {
+    const response = await fetch('comprar_buff.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ id_buff: buffId }),
+    });
 
-    perk.classList.remove("bloqueado");
-    perk.classList.add("desbloqueado");
-    perk.querySelector(".candado")?.remove();
+    const data = await response.json();
 
-    infoPrecio.textContent = "Desbloqueado ✅";
-    btnComprar.classList.add("oculto");
+    if (data.success) {
+      // 1. Actualizar puntos en la UI
+      cantidadDatos.textContent = data.new_points;
 
-    alert("Glitch comprado con éxito.");
-  } else {
-    alert("No tienes suficientes datos.");
+      // 2. Marcar el perk como desbloqueado en la tienda
+      const perkElement = document.querySelector(`.perk[data-id='${buffId}']`);
+      if (perkElement) {
+        perkElement.classList.remove('bloqueado');
+        perkElement.classList.add('desbloqueado');
+        perkElement.querySelector('.candado')?.remove();
+      }
+
+      // 3. Actualizar el modal de información
+      infoPrecio.textContent = "Desbloqueado ✅";
+      btnComprar.classList.add("oculto");
+      alert('¡Glitch comprado con éxito!');
+    } else {
+      alert('Error: ' + data.message);
+    }
+  } catch (error) {
+    console.error('Error en la petición de compra:', error);
+    alert('Error de conexión al intentar realizar la compra.');
   }
 }
 

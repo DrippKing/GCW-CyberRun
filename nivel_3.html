@@ -34,7 +34,7 @@
   <h2>Juego en Pausa</h2>
   <button id="btn-continuar" class="btn">Continuar</button>
   <button id="btn-reiniciar" class="btn">Reiniciar</button>
-  <button id="btn-menu" class="btn salir">Menú Principal</button>
+  <a href="index.php?page=home" id="btn-menu" class="btn salir" style="text-decoration: none; text-align: center;">Menú</a>
 </div>
 
 <!-- Panel Game Over -->
@@ -42,17 +42,16 @@
   <h2>GAME OVER</h2>
   <p id="final-score">Puntuación: 0</p>
   <button id="btn-reiniciar-go" class="btn">Reiniciar</button>
-  <button id="btn-menu-go" class="btn salir">Menú</button>
+  <a href="index.php?page=home" id="btn-menu-go" class="btn salir" style="text-decoration: none; text-align: center;">Menú</a>
 </div>
 
 <!-- Música de fondo -->
 <audio id="musica-juego" src="Error-Storm(Voiced).mp3" loop></audio>
-<!-- Sonidos de botones -->
-<audio id="sonido-hover" src="Button-Sound.mp3"></audio>
-<audio id="sonido-click" src="Select-button-sound(Fixed).mp3"></audio>
-<!-- Sonido de salto / choque opcional -->
-<audio id="sonido-salto" src="jump.wav"></audio>
-<audio id="sonido-choque" src="crash.wav"></audio>
+<!-- Sonidos -->
+<audio id="sonido-hover" src="audio/Button-Sound.mp3"></audio>
+<audio id="sonido-click" src="audio/Select-button-sound(Fixed).mp3"></audio>
+<audio id="sonido-salto" src="audio/jump.wav"></audio>
+<audio id="sonido-choque"src/="audio/crash.wav"></audio>
 
 <!-- contenedor para la escena 3D -->
 <div id="three-container"></div>

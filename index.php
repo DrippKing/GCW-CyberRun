@@ -1,5 +1,5 @@
 <?php
-session_start(); // Inicia o reanuda la sesión en cada petición.
+session_start(); // Inicia o reanuda la sesión. ¡Esto es crucial!
 
 // Definimos las páginas válidas para evitar que se incluyan archivos no deseados.
 $paginas_permitidas = [

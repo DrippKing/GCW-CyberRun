@@ -20,13 +20,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     exit();
 }
 
-// --- Configuración de la Base de Datos ---
-$db_host = 'localhost';
-$db_name = 'gcw_cyber_run'; // Asegúrate de que este sea el nombre de tu BD
-$db_user = 'root';
-$db_pass = '';            // Tu contraseña de MySQL (usualmente vacía en XAMPP)
-
 // --- Lógica del Servidor ---
+require_once 'config_db.php'; // Incluimos la conexión centralizada
 
 // 1. Leer los datos JSON enviados desde el frontend
 $json_data = file_get_contents('php://input');
@@ -43,9 +38,6 @@ if (!$usuario || !$password) {
 
 // 2. Conectar a la base de datos y verificar credenciales
 try {
-    $pdo = new PDO("mysql:host=$db_host;port=3307;dbname=$db_name;charset=utf8", $db_user, $db_pass);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
     // Preparamos la consulta para evitar inyección SQL
     $stmt = $pdo->prepare("SELECT * FROM users WHERE u_name = ? AND u_password = ?"); // Usando los nombres de tu BD
     $stmt->execute([$usuario, $password]);

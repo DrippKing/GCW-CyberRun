@@ -74,9 +74,9 @@ function continuarJuego() {
 btnPausa.addEventListener("click", pausarJuego);
 btnContinuar.addEventListener("click", continuarJuego);
 btnReiniciar.addEventListener("click", () => location.reload());
-btnMenu.addEventListener("click", () => window.location.href = "index.html");
+btnMenu.addEventListener("click", () => window.location.href = "index.php?page=home");
 btnReiniciarGO.addEventListener("click", () => location.reload());
-btnMenuGO.addEventListener("click", () => window.location.href = "index.html");
+btnMenuGO.addEventListener("click", () => window.location.href = "index.php?page=home");
 
 function iniciarMusicaJuego() {
   if (musicaJuego && musicaJuego.paused) musicaJuego.play().catch(()=>{});
@@ -433,8 +433,32 @@ function triggerGameOver() {
   finalScoreEl.textContent = `Puntuación: ${Math.floor(distancia)} pts`;
   gameOverPanel.style.display = "block";
   menuPausa.classList.add("oculto");
+
+  // Guardar la puntuación en la base de datos
+  guardarPuntuacion(distancia);
 }
 
+async function guardarPuntuacion(puntos) {
+  // Solo intentamos guardar si hay una sesión de usuario activa (detectado en el PHP)
+  try {
+    const response = await fetch('guardar_puntos.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ puntos: Math.floor(puntos) }),
+    });
+
+    const result = await response.json();
+    if (result.success) {
+      console.log("Puntuación guardada en la base de datos.");
+    } else {
+      console.log("No se guardó la puntuación (puede que no hayas iniciado sesión).", result.message);
+    }
+  } catch (error) {
+    console.error('Error al intentar guardar la puntuación:', error);
+  }
+}
 
 
 // =====================================================
