@@ -7,7 +7,7 @@ $db_user = 'drippkin_Host';
 $db_pass = 'DrippKing5545';
 
 try {
-    $pdo = new PDO("mysql:host=$db_host;port=3307;dbname=$db_name;charset=utf8", $db_user, $db_pass);
+    $pdo = new PDO("mysql:host=$db_host;port=3306;dbname=$db_name;charset=utf8", $db_user, $db_pass);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
     error_log("Error de conexión a la BD: " . $e->getMessage());
