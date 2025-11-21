@@ -105,6 +105,9 @@ h2.titulo-juego{
   cursor: pointer;
   transition: 0.3s;
   box-shadow: 0 0 10px #00ffe0;
+  text-decoration: none;
+  text-align: center;
+  display: inline-block;
 }
 
 .btn:hover {
@@ -139,21 +142,7 @@ h2.titulo-juego{
   min-width: 300px;
   z-index: 10;
 }
-.menu-niveles .btn.nivel {
-  width: 100%;
-  padding: 12px;
-  font-size: 1.2rem;
-  font-family: inherit;
-  color: #0f0f0f;
-  background: linear-gradient(90deg, #00ffe0, #0080ff);
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: 0.3s;
-  box-shadow: 0 0 10px #00ffe0;
-  margin-bottom: 20px;
-}
-
+.menu-niveles .btn.nivel,
 .menu-niveles #btn-niveles-regresar {
   width: 100%;
   padding: 12px;
@@ -635,4 +624,55 @@ h2.titulo-juego{
 
 .info-perk .btn-cerrar:hover {
   color: #ff8080;
+}
+
+/* Estilos para la Navbar */
+#navbar {
+  background-image: linear-gradient(to right, #29b7f9, black, #570e35);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 15px 30px;
+  display: flex;
+  justify-content: space-between; /* Alinea los elementos a los extremos */
+  align-items: center;
+  box-sizing: border-box; /* Asegura que el padding no afecte el ancho total */
+  z-index: 100; /* Para que esté por encima de otros elementos */
+}
+
+#navbar .user-info {
+  display: flex;
+  align-items: center;
+  gap: 15px; /* Espacio entre el avatar y el nombre */
+}
+
+#navbar #navbar-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid #00ffe0;
+}
+
+#navbar #navbar-username {
+  color: #fff;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+/* Reutiliza el estilo de tus botones */
+#navbar .btn {
+  background-color: #00ff9d;
+  padding: 8px 16px;
+  font-size: 0.9rem;
+}
+
+/* Clase para ocultar elementos */
+.oculto {
+  display: none !important;
+}
+
+#menu-login {
+    align-items: center;
+    text-align: center;
 }

@@ -1,24 +1,35 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cyber Run: Escape del Mainframe</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css"> <!-- Ruta relativa, ¡correcto! -->
 </head>
 <body>
 
-<button type="button" id="btn-login">Login</button>
-<button type="button" id="btn-logout">Logout</button>
-
   <div id="contenedor-principal">  
-
+    <div id="navbar">      
+      <div class="user-info">
+        <?php if (isset($_SESSION['user'])): ?>
+            <img src="avatar-default.png" alt="Avatar" id="navbar-avatar">
+            <span id="navbar-username"><?php echo htmlspecialchars($_SESSION['user']['u_name']); ?></span>
+        <?php endif; ?>
+      </div>
+      
+      <?php if (!isset($_SESSION['user'])): ?>
+        <button id="navbar-login" class="btn" onclick="abrirLogin()">Iniciar Sesión</button>
+      <?php else: ?>
+        <a href="logout.php" id="navbar-logout" class="btn">Cerrar Sesión</a>
+      <?php endif; ?>
+    </div>
 
 
     <!-- Música y audios -->
-    <audio id="musica-fondo" loop></audio>
-    <audio id="sonido-btn_Hover" src="Button-Sound.mp3"></audio>
-    <audio id="sonido-btn_Click" src="Select-button-sound(Fixed).mp3"></audio>
+    <audio id="musica-fondo" loop></audio> <!-- Ruta relativa, ¡correcto! -->
+    <audio id="sonido-btn_Hover" src="Button-Sound.mp3"></audio> <!-- Ruta relativa, ¡correcto! -->
+    <audio id="sonido-btn_Click" src="Select-button-sound(Fixed).mp3"></audio> <!-- Ruta relativa, ¡correcto! -->
 
     <!-- Pantalla de Inicio -->
     <section id="pantalla-inicio" class="pantalla activa">
@@ -29,7 +40,7 @@
         </div>
 
         <div class="menu">
-          <button class="btn" onclick="seleccionarNivel()">SinglePlayer</button>
+          <button class="btn" onclick="seleccionarNivel()">Single Player</button>
           <button class="btn" onclick="seleccionarNivel('multijugador')">Multiplayer</button>
           <button class="btn" onclick="abrirTienda()">Tienda</button>
           <button class="btn" onclick="abrirRanking()">Ranking</button>
@@ -53,6 +64,21 @@
         <button class="btn" id="btn-regresar">Regresar</button>
       </div>
     </section>
+
+    <!-- Contenedor de Login -->
+    <div id="menu-login" class="menu-opciones oculto">
+      <h2>Iniciar Sesión</h2>
+      <div class="opcion">
+        <input type="text" id="login-usuario" placeholder="Usuario" class="input-login">
+      </div>
+      <div class="opcion">
+        <input type="password" id="login-password" placeholder="Contraseña" class="input-login">
+      </div>
+      <p id="login-error" class="error-msg"></p>
+      <button class="btn" id="btn-submit-login">Entrar</button>
+      <hr style="margin: 12px 0; border-color: #555;">
+      <button class="btn" id="btn-login-regresar">Regresar</button>
+    </div>
 
     <!-- Contenedor de selector de niveles SinglePlayer -->
     <div id="menu-niveles-single" class="menu-niveles oculto">
@@ -113,35 +139,67 @@
     <!-- Contenedor de Tienda -->
     <div id="menu-tienda" class="menu-tienda oculto">
       <h2>Tienda de Glitches</h2>
-      <p class="datos-total">Datos disponibles: <span id="cantidad-datos">2500</span></p>
-
       <!-- Lista scrollable de glitches -->
       <div class="lista-perks">
-        <!-- Glitch bloqueado -->
-        <div class="perk bloqueado" data-nombre="Fase Fantasma" data-descripcion="Te permite atravesar un obstáculo una vez sin morir." data-precio="1200">
-          <div class="imagen-perk">
-            <img src="glitch-fantasma.png" alt="Fase Fantasma">
-            <div class="candado">🔒</div>
-          </div>
-          <p>Fase Fantasma</p>
-        </div>
+        <?php
+          // --- Configuración de la Base de Datos ---
+          $db_host = 'localhost';
+          $db_name = 'gcw_cyber_run';
+          $db_user = 'root';
+          $db_pass = '';
 
-        <!-- Glitch desbloqueado -->
-        <div class="perk desbloqueado" data-nombre="Overclock Neural" data-descripcion="Aumenta tu velocidad de procesamiento. Corre 30% más rápido.">
-          <div class="imagen-perk">
-            <img src="glitch-overclock.png" alt="Overclock Neural">
-          </div>
-          <p>Overclock Neural</p>
-        </div>
+          try {
+              $pdo = new PDO("mysql:host=$db_host;port=3307;dbname=$db_name;charset=utf8", $db_user, $db_pass);
+              $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        <!-- Glitch bloqueado -->
-        <div class="perk bloqueado" data-nombre="Reescritura del Código" data-descripcion="Cuando mueres, tu código se repara y reapareces una vez." data-precio="2000">
-          <div class="imagen-perk">
-            <img src="glitch-rewrite.png" alt="Reescritura del Código">
-            <div class="candado">🔒</div>
-          </div>
-          <p>Reescritura del Código</p>
-        </div>
+              // --- OBTENER PUNTOS DEL USUARIO ---
+              $current_points = 0;
+              if (isset($_SESSION['user']) && isset($_SESSION['user']['id_user_PK'])) {
+                  $stmt_user = $pdo->prepare("SELECT current_points FROM users WHERE id_user_PK = ?");
+                  $stmt_user->execute([$_SESSION['user']['id_user_PK']]);
+                  $user_data = $stmt_user->fetch(PDO::FETCH_ASSOC);
+                  if ($user_data) {
+                      $current_points = $user_data['current_points'];
+                      $_SESSION['user']['current_points'] = $current_points; // Actualizar sesión
+                  }
+              }
+              
+              // --- MOSTRAR PUNTOS ---
+              echo '<p class="datos-total">Datos disponibles: <span id="cantidad-datos">' . $current_points . '</span></p>';
+
+
+              // --- OBTENER Y MOSTRAR BUFFS ---
+              $stmt = $pdo->prepare("SELECT nombre, descripcion, price, picture FROM buffs");
+              $stmt->execute();
+              $buffs = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+              foreach ($buffs as $buff) {
+                  $nombre = htmlspecialchars($buff['nombre']);
+                  $descripcion = htmlspecialchars($buff['descripcion']);
+                  $precio = htmlspecialchars($buff['price']);
+                  $imagen = 'data:image/jpeg;base64,' . base64_encode($buff['picture']);
+
+                  // AQUI SE ASUME QUE TODOS LOS BUFFS ESTAN BLOQUEADOS INICIALMENTE
+                  // LA LOGICA PARA DETERMINAR SI ESTA DESBLOQUEADO DEBERIA IR AQUI
+                  $estado = 'bloqueado'; 
+                  $candado = '<div class="candado">🔒</div>';
+
+                  echo "<div class='perk {$estado}' data-nombre='{$nombre}' data-descripcion='{$descripcion}' data-precio='{$precio}'>";
+                  echo "  <div class='imagen-perk'>";
+                  echo "    <img src='{$imagen}' alt='{$nombre}'>";
+                  echo "    {$candado}";
+                  echo "  </div>";
+                  echo "  <p>{$nombre}</p>";
+                  echo "</div>";
+              }
+
+          } catch (PDOException $e) {
+              // Si la BD falla, al menos muestra los puntos que pueda haber en la sesión
+              $current_points = $_SESSION['user']['current_points'] ?? 0;
+              echo '<p class="datos-total">Datos disponibles: <span id="cantidad-datos">' . $current_points . '</span></p>';
+              echo "Error al conectar con la base de datos para cargar la tienda: " . $e->getMessage();
+          }
+        ?>
       </div>
 
       <!-- Ventana de información del perk -->
@@ -179,11 +237,12 @@
   </div> <!-- Div contenedor-principal -->
 
   <video muted autoplay loop id="video-bg">
-    <source src="./CyberVideo.mp4" type="video/mp4">
+    <source src="CyberVideo.mp4" type="video/mp4"> <!-- Ruta relativa simplificada -->
   </video>
 
   <div class="filtro-negro"></div>
 
-  <script type="module" src="script.js"></script>
+  <!-- <script type="module" src="script.js"></script> -->
+  <script src="script.js"></script> <!-- Ruta relativa, ¡correcto! -->
 </body>
 </html>

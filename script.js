@@ -1,65 +1,4 @@
-// =================================================================================================
-// DECLARACIÓN DE VARIABLES
-// =================================================================================================
-// Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
 
-  // Your web app's Firebase configuration
-  const firebaseConfig = {
-    apiKey: "AIzaSyCWuR1EeefTapQE2qQpoYzaz7R7KwYLnwU",
-    authDomain: "gcw-cyberrun.firebaseapp.com",
-    databaseURL: "https://gcw-cyberrun-default-rtdb.firebaseio.com",
-    projectId: "gcw-cyberrun",
-    storageBucket: "gcw-cyberrun.firebasestorage.app",
-    messagingSenderId: "674852434984",
-    appId: "1:674852434984:web:c920345a5d5c7f0875311d"
-  };
-
-  import { getAuth, 
-    signInWithPopup, 
-    GoogleAuthProvider 
-  } from "firebase/auth";
-
-
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const provider = new GoogleAuthProvider();
-  const auth = getAuth();
-
-const btnLogin = document.getElementBy("btn-login");
-const btnLogout = document.getElementBy("btn-logout");
-
-async function login(){
-  await (auth, provider)
-  .then((result) => {
-    // This gives you a Google Access Token. You can use it to access the Google API.
-    const credential = GoogleAuthProvider.credentialFromResult(result);
-    const token = credential.accessToken;
-    // The signed-in user info.
-    const user = result.user;
-    console.log(user);
-    // IdP data available using getAdditionalUserInfo(result)
-    // ...
-  }).catch((error) => {
-    // Handle Errors here.
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    // The email of the user's account used.
-    const email = error.customData.email;
-    // The AuthCredential type that was used.
-    const credential = GoogleAuthProvider.credentialFromError(error);
-    // ...
-  });
-
-}
-
-btnLogin.addEventListener("click", async() =>{
-  await login();
-});
-
-// AUDIO -----------------------
 const musica = document.getElementById("musica-fondo");
 const sonido_btn_Hover = document.getElementById("sonido-btn_Hover");
 const sonido_btn_Click = document.getElementById("sonido-btn_Click");
@@ -73,6 +12,15 @@ const botonesMenu = document.querySelectorAll(".menu > .btn");
 const btnRegresar = document.getElementById("btn-regresar");
 const sliderMusica = document.getElementById("volumen-musica");
 const sliderSonidos = document.getElementById("volumen-sonidos");
+
+// LOGIN -----------------------
+const LoginBtn = document.getElementById("navbar-login");
+const menuLogin = document.getElementById("menu-login");
+const btnLoginRegresar = document.getElementById("btn-login-regresar");
+const btnSubmitLogin = document.getElementById("btn-submit-login");
+const inputUsuario = document.getElementById("login-usuario");
+const inputPassword = document.getElementById("login-password");
+const loginError = document.getElementById("login-error");
 
 // RANKING ---------------------
 const menuRanking = document.getElementById("menu-ranking");
@@ -179,6 +127,69 @@ sliderSonidos.addEventListener("input", () => {
 
 
 // =================================================================================================
+// LOGIN
+// =================================================================================================
+
+function abrirLogin() {
+  // Ocultamos el menú principal y mostramos el de login
+  botonesMenu.forEach(btn => btn.classList.add("oculto"));
+  menuLogin.classList.remove("oculto");
+}
+
+btnLoginRegresar.addEventListener("click", () => {
+  // Ocultamos el menú de login y mostramos el principal
+  menuLogin.classList.add("oculto");
+  botonesMenu.forEach(btn => btn.classList.remove("oculto"));
+});
+
+btnSubmitLogin.addEventListener("click", async () => {
+  const usuario = inputUsuario.value;
+  const password = inputPassword.value;
+  loginError.textContent = ""; // Limpiar errores previos
+
+  if (!usuario || !password) {
+    loginError.textContent = "Usuario y contraseña son requeridos.";
+    return;
+  }
+
+  loginError.textContent = "Conectando...";
+  loginError.style.color = "#00ffe0";
+
+  try {
+    // Hacemos la petición a nuestro script PHP.
+    // Asegúrate de que la URL coincida con la ubicación de tu proyecto en htdocs.
+    const response = await fetch('login.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ usuario: usuario, password: password }),
+    });
+
+    const data = await response.json();
+
+    if (response.ok && data.success) {
+      // La sesión ya está creada en el lado del servidor por login.php.
+      // Simplemente recargamos la página. El servidor detectará la sesión activa
+      // y renderizará la vista correcta (con el botón de "Cerrar Sesión").
+      loginError.textContent = "Login exitoso! Recargando...";
+      loginError.style.color = "#00ff9d";
+      window.location.reload();
+    } else {
+      // El backend dijo que las credenciales son incorrectas
+      loginError.textContent = data.message || "Credenciales inválidas.";
+      loginError.style.color = "#ff8080";
+    }
+
+  } catch (error) {
+    // Esto ocurre si Apache no está corriendo o hay un problema de red/CORS.
+    loginError.textContent = "Error: No se pudo conectar con el servidor.";
+    loginError.style.color = "#ff8080";
+    console.error("Error en el fetch:", error);
+  }
+});
+
+// =================================================================================================
 // SELECTOR DE NIVELES
 // =================================================================================================
 
@@ -210,7 +221,8 @@ function iniciarNivelConDificultad(dificultad) {
   localStorage.setItem("dificultadSeleccionada", dificultadSeleccionada);
   localStorage.setItem("glitchSeleccionado", glitchSeleccionado || "ninguno");
   localStorage.setItem("nivelSeleccionado", nivelSeleccionado);
-  window.location.href = `nivel_${nivelSeleccionado}.html`;
+  // Redirigimos a index.php pidiendo la página del nivel correspondiente.
+  window.location.href = `index.php?page=level${nivelSeleccionado}`;
 }
 
 btnDificultadRegresar.addEventListener("click", () => {
