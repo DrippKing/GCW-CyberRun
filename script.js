@@ -1,8 +1,4 @@
-// =================================================================================================
-// DECLARACIÓN DE VARIABLES
-// =================================================================================================
 
-// AUDIO -----------------------
 const musica = document.getElementById("musica-fondo");
 const sonido_btn_Hover = document.getElementById("sonido-btn_Hover");
 const sonido_btn_Click = document.getElementById("sonido-btn_Click");
@@ -16,6 +12,15 @@ const botonesMenu = document.querySelectorAll(".menu > .btn");
 const btnRegresar = document.getElementById("btn-regresar");
 const sliderMusica = document.getElementById("volumen-musica");
 const sliderSonidos = document.getElementById("volumen-sonidos");
+
+// LOGIN -----------------------
+const LoginBtn = document.getElementById("navbar-login");
+const menuLogin = document.getElementById("menu-login");
+const btnLoginRegresar = document.getElementById("btn-login-regresar");
+const btnSubmitLogin = document.getElementById("btn-submit-login");
+const inputUsuario = document.getElementById("login-usuario");
+const inputPassword = document.getElementById("login-password");
+const loginError = document.getElementById("login-error");
 
 // RANKING ---------------------
 const menuRanking = document.getElementById("menu-ranking");
@@ -122,6 +127,69 @@ sliderSonidos.addEventListener("input", () => {
 
 
 // =================================================================================================
+// LOGIN
+// =================================================================================================
+
+function abrirLogin() {
+  // Ocultamos el menú principal y mostramos el de login
+  botonesMenu.forEach(btn => btn.classList.add("oculto"));
+  menuLogin.classList.remove("oculto");
+}
+
+btnLoginRegresar.addEventListener("click", () => {
+  // Ocultamos el menú de login y mostramos el principal
+  menuLogin.classList.add("oculto");
+  botonesMenu.forEach(btn => btn.classList.remove("oculto"));
+});
+
+btnSubmitLogin.addEventListener("click", async () => {
+  const usuario = inputUsuario.value;
+  const password = inputPassword.value;
+  loginError.textContent = ""; // Limpiar errores previos
+
+  if (!usuario || !password) {
+    loginError.textContent = "Usuario y contraseña son requeridos.";
+    return;
+  }
+
+  loginError.textContent = "Conectando...";
+  loginError.style.color = "#00ffe0";
+
+  try {
+    // Hacemos la petición a nuestro script PHP.
+    // Asegúrate de que la URL coincida con la ubicación de tu proyecto en htdocs.
+    const response = await fetch('login.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ usuario: usuario, password: password }),
+    });
+
+    const data = await response.json();
+
+    if (response.ok && data.success) {
+      // La sesión ya está creada en el lado del servidor por login.php.
+      // Simplemente recargamos la página. El servidor detectará la sesión activa
+      // y renderizará la vista correcta (con el botón de "Cerrar Sesión").
+      loginError.textContent = "Login exitoso! Recargando...";
+      loginError.style.color = "#00ff9d";
+      window.location.reload();
+    } else {
+      // El backend dijo que las credenciales son incorrectas
+      loginError.textContent = data.message || "Credenciales inválidas.";
+      loginError.style.color = "#ff8080";
+    }
+
+  } catch (error) {
+    // Esto ocurre si Apache no está corriendo o hay un problema de red/CORS.
+    loginError.textContent = "Error: No se pudo conectar con el servidor.";
+    loginError.style.color = "#ff8080";
+    console.error("Error en el fetch:", error);
+  }
+});
+
+// =================================================================================================
 // SELECTOR DE NIVELES
 // =================================================================================================
 
@@ -153,7 +221,8 @@ function iniciarNivelConDificultad(dificultad) {
   localStorage.setItem("dificultadSeleccionada", dificultadSeleccionada);
   localStorage.setItem("glitchSeleccionado", glitchSeleccionado || "ninguno");
   localStorage.setItem("nivelSeleccionado", nivelSeleccionado);
-  window.location.href = `nivel_${nivelSeleccionado}.html`;
+  // Redirigimos a index.php pidiendo la página del nivel correspondiente.
+  window.location.href = `index.php?page=level${nivelSeleccionado}`;
 }
 
 btnDificultadRegresar.addEventListener("click", () => {
@@ -233,10 +302,11 @@ btnTiendaRegresar.addEventListener("click", () => {
 
 listaPerks.forEach(perk => {
   perk.addEventListener("click", () => {
+    const id = perk.dataset.id;
     const nombre = perk.dataset.nombre;
     const descripcion = perk.dataset.descripcion;
     const desbloqueado = perk.classList.contains("desbloqueado");
-    const precio = parseInt(perk.dataset.precio || 0);
+    const precio = perk.dataset.precio;
     const imagen = perk.querySelector("img").src;
 
     infoNombre.textContent = nombre;
@@ -249,7 +319,7 @@ listaPerks.forEach(perk => {
     } else {
       infoPrecio.textContent = `Precio: ${precio} datos`;
       btnComprar.classList.remove("oculto");
-      btnComprar.onclick = () => confirmarCompra(perk, precio);
+      btnComprar.onclick = () => confirmarCompra(id, nombre, precio);
     }
 
     infoPerk.classList.remove("oculto");
@@ -260,27 +330,46 @@ cerrarInfo.addEventListener("click", () => {
   infoPerk.classList.add("oculto");
 });
 
-function confirmarCompra(perk, precio) {
-  if (confirm(`¿Deseas comprar "${perk.dataset.nombre}" por ${precio} datos?`)) {
-    comprarPerk(perk, precio);
+function confirmarCompra(id, nombre, precio) {
+  if (confirm(`¿Deseas comprar "${nombre}" por ${precio} datos?`)) {
+    comprarPerk(id);
   }
 }
 
-function comprarPerk(perk, precio) {
-  if (datosJugador >= precio) {
-    datosJugador -= precio;
-    cantidadDatos.textContent = datosJugador;
+async function comprarPerk(buffId) {
+  try {
+    const response = await fetch('comprar_buff.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ id_buff: buffId }),
+    });
 
-    perk.classList.remove("bloqueado");
-    perk.classList.add("desbloqueado");
-    perk.querySelector(".candado")?.remove();
+    const data = await response.json();
 
-    infoPrecio.textContent = "Desbloqueado ✅";
-    btnComprar.classList.add("oculto");
+    if (data.success) {
+      // 1. Actualizar puntos en la UI
+      cantidadDatos.textContent = data.new_points;
 
-    alert("Glitch comprado con éxito.");
-  } else {
-    alert("No tienes suficientes datos.");
+      // 2. Marcar el perk como desbloqueado en la tienda
+      const perkElement = document.querySelector(`.perk[data-id='${buffId}']`);
+      if (perkElement) {
+        perkElement.classList.remove('bloqueado');
+        perkElement.classList.add('desbloqueado');
+        perkElement.querySelector('.candado')?.remove();
+      }
+
+      // 3. Actualizar el modal de información
+      infoPrecio.textContent = "Desbloqueado ✅";
+      btnComprar.classList.add("oculto");
+      alert('¡Glitch comprado con éxito!');
+    } else {
+      alert('Error: ' + data.message);
+    }
+  } catch (error) {
+    console.error('Error en la petición de compra:', error);
+    alert('Error de conexión al intentar realizar la compra.');
   }
 }
 
