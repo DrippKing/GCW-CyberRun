@@ -22,7 +22,8 @@
         </div>
         <div class="menu">
           <button class="btn" onclick="seleccionarNivel()">SinglePlayer</button>
-          <button class="btn" onclick="seleccionarNivel('multijugador')">Multiplayer</button>
+         <button class="btn" onclick="seleccionarNivel('multijugador')">Multiplayer</button>
+
 <!--
   <button class="btn" onclick="cambiarPantalla('multijugador')">Multiplayer</button>
         -->
@@ -47,26 +48,28 @@
         <button class="btn" id="btn-regresar">Regresar</button>
     </section>
     <!-- Contenedor de selector de niveles SinglePlayer ***************************************************************** -->
-    <div id="menu-niveles" class="menu-niveles oculto">
-     <h2>Selecciona un Nivel</h2>
-     <div class="niveles">
-       <button class="btn nivel" onclick="iniciarNivel(1)">Nivel 1</button>
-       <button class="btn nivel" onclick="iniciarNivel(2)">Nivel 2</button>
-       <button class="btn nivel" onclick="iniciarNivel(3)">Nivel 3</button>
-     </div>
-     <button class="btn" id="btn-niveles-regresar">Regresar</button>
+    <div id="menu-niveles-single" class="menu-niveles oculto">
+  <h2>Selecciona un Nivel</h2>
+  <div class="niveles">
+   <button class="btn nivel" onclick="iniciarNivel(1, 'single')">Nivel 1</button>
+<button class="btn nivel" onclick="iniciarNivel(2, 'single')">Nivel 2</button>
+<button class="btn nivel" onclick="iniciarNivel(3, 'single')">Nivel 3</button>
+
   </div>
+  <button class="btn" id="btn-niveles-regresar-single">Regresar</button>
+</div>
 
    <!-- Contenedor de selector de niveles multijugador ***************************************************************** -->
-   <div id="menu-niveles" class="menu-niveles oculto">
-     <h2>Selecciona un Nivel</h2>
-     <div class="niveles">
-       <button class="btn nivel" onclick="iniciarNivel(1)">Nivel 1</button>
-       <button class="btn nivel" onclick="iniciarNivel(2)">Nivel 2</button>
-       <button class="btn nivel" onclick="iniciarNivel(3)">Nivel 3</button>
-     </div>
-     <button class="btn" id="btn-niveles-regresar">Regresar</button>
+  <div id="menu-niveles-multi" class="menu-niveles oculto">
+  <h2>Selecciona un Nivel Multiplayer</h2>
+  <div class="niveles">
+   <button class="btn nivel" onclick="iniciarNivel(1, 'multi')">Nivel 1</button>
+<button class="btn nivel" onclick="iniciarNivel(2, 'multi')">Nivel 2</button>
+<button class="btn nivel" onclick="iniciarNivel(3, 'multi')">Nivel 3</button>
+
   </div>
+  <button class="btn" id="btn-niveles-regresar-multi">Regresar</button>
+</div>
 
 <!-- Contenedor de Ranking **********************************************************************************************-->
  <div id="menu-ranking" class="menu-ranking oculto">

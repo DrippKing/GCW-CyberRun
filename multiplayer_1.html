@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber Run Multiplayer: Nivel 1</title>
+    <link rel="stylesheet" href="level.css">
+</head>
+<body>
+
+<div id="contador">0</div>
+<div id="puntos">Puntos: 0</div>
+
+<button id="btn-pausa" class="btn pausa-btn">⏸ Pausa</button>
+
+<div id="menu-pausa" class="menu-pausa oculto">
+  <h2>Juego en Pausa (Multiplayer)</h2>
+  <button id="btn-continuar" class="btn">Continuar</button>
+  <button id="btn-reiniciar" class="btn">Reiniciar</button>
+  <button id="btn-menu" class="btn salir">Menú Principal</button>
+</div>
+
+<audio id="musica-juego" src="Faster-Than-Bytes_Voiced_.mp3" loop></audio>
+<audio id="sonido-hover" src="Button-Sound.mp3"></audio>
+<audio id="sonido-click" src="Select-button-sound(Fixed).mp3"></audio>
+
+<div id="three-container"></div>
+
+<script type="module" src="multiplayer_1.js"></script>
+
+</body>
+</html>

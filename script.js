@@ -159,22 +159,57 @@ sliderSonidos.addEventListener("input", () => {
 });
 // ------------------------------------- LÓGICA DE SELECTOR DE NIVEL -------------------------------------
 //Abrir selector de nivel
-function seleccionarNivel() {
+function seleccionarNivel(modo = "single") {
+  document.querySelector(".menu").classList.add("oculto");
+  document.getElementById("titulos").classList.add("oculto");
+
+  if (modo === "single") {
+    document.getElementById("menu-niveles-single").classList.remove("oculto");
+  } else {
+    document.getElementById("menu-niveles-multi").classList.remove("oculto");
+  }
+}
+
+/*function seleccionarNivel() {
   document.querySelector(".menu").classList.add("oculto");
   document.getElementById("titulos").classList.add("oculto");
   document.getElementById("menu-niveles").classList.remove("oculto");
-}
+}*/
 //Regresar desde selector de nivel
-document.getElementById("btn-niveles-regresar").addEventListener("click", () => {
-  document.getElementById("menu-niveles").classList.add("oculto");
+// Regresar desde selector de nivel single
+document.getElementById("btn-niveles-regresar-single").addEventListener("click", () => {
+  document.getElementById("menu-niveles-single").classList.add("oculto");
   document.querySelector(".menu").classList.remove("oculto");
   document.getElementById("titulos").classList.remove("oculto");
 });
 
+// Regresar desde selector de nivel multi
+document.getElementById("btn-niveles-regresar-multi").addEventListener("click", () => {
+  document.getElementById("menu-niveles-multi").classList.add("oculto");
+  document.querySelector(".menu").classList.remove("oculto");
+  document.getElementById("titulos").classList.remove("oculto");
+});
+
+// Abrir nivel
+function iniciarNivel(nivel, modo = "single") {
+  if (modo === "single") {
+    window.location.href = `nivel_${nivel}.html`; 
+  } else {
+    window.location.href = `multiplayer_${nivel}.html`; 
+  }
+}
+
+
+/*document.getElementById("btn-niveles-regresar").addEventListener("click", () => {
+  document.getElementById("menu-niveles").classList.add("oculto");
+  document.querySelector(".menu").classList.remove("oculto");
+  document.getElementById("titulos").classList.remove("oculto");
+});*/
+/*
 function iniciarNivel(nivel) {
   alert("Iniciar nivel: " + nivel);
   window.location.href = `nivel_${nivel}.html`;
-}
+}*/
 
 // ------------------------------------- LÓGICA DE RANKING -------------------------------------
 // Abrir Ranking
