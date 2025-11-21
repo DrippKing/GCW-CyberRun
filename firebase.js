@@ -27,7 +27,7 @@
   const auth = getAuth();
 
   const btnLogin = document. getElementById("btn-login");
-  const btnLogout = document. getElementBy("btn-logout");
+  const btnLogout = document. getElementById("btn-logout");
 
 async function login(){
   await signInWithPopup(auth, provider)
