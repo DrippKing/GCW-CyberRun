@@ -180,9 +180,9 @@ player.mesh = playerMesh;
 
 // Cargar modelo del jugador
 const gltfLoader = new GLTFLoader();
-gltfLoader.load("personaje_principal.glb", (gltf) => {
+gltfLoader.load("Robot.glb", (gltf) => {
   const model = gltf.scene;
-  model.scale.set(2, 2, 2);
+  model.scale.set(0.6, 0.6, 0.6);
   model.position.set(playerMesh.position.x, playerMesh.position.y - 1.1, playerMesh.position.z);
   model.rotation.y = Math.PI;
   scene.add(model);
