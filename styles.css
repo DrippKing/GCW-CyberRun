@@ -220,10 +220,6 @@ h2.titulo-juego{
   text-align: left;
 }
 
-.menu-ranking li {
-  padding: 5px 0;
-  border-bottom: 1px solid #00ffe0;
-}
 /* Contenedor de Tienda *****************************************************************************************************************************/
 .menu-tienda {
   position: absolute;
@@ -675,4 +671,48 @@ h2.titulo-juego{
 #menu-login {
     align-items: center;
     text-align: center;
+}
+
+/* Estilos para la lista del ranking */
+.lista-ranking li {
+  display: flex;
+  justify-content: space-between; /* Empuja los elementos a los extremos */
+  align-items: center;
+  padding: 8px 4px; /* Espaciado vertical y un poco horizontal */
+  border-bottom: 1px solid #2a2a2a; /* Línea separadora más oscura */
+}
+
+.lista-ranking li:last-child {
+  border-bottom: none; /* Elimina la línea del último elemento */
+}
+
+.ranking-player {
+  display: flex;
+  align-items: center;
+}
+
+.ranking-position {
+  margin-right: 12px; /* Espacio entre el número y el nombre */
+  color: #aaa;
+  width: 20px; /* Ancho fijo para alinear los nombres */
+}
+
+.ranking-score {
+  color: #00ff9d; /* Un color diferente para los puntos */
+}
+
+/* Animación para la salida del juego */
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    background-color: #000; /* Fondo se vuelve negro */
+  }
+}
+
+body.fade-out-active {
+  animation: fadeOut 3s ease-out forwards;
+}
 }

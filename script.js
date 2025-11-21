@@ -6,12 +6,14 @@ const sonido_btn_Click = document.getElementById("sonido-btn_Click");
 // BOTONES
 const botones = document.querySelectorAll('.btn');
 
+
 // OPCIONES --------------------
 const menuOpciones = document.getElementById("menu-opciones");
 const botonesMenu = document.querySelectorAll(".menu > .btn");
 const btnRegresar = document.getElementById("btn-regresar");
 const sliderMusica = document.getElementById("volumen-musica");
 const sliderSonidos = document.getElementById("volumen-sonidos");
+
 
 // LOGIN -----------------------
 const LoginBtn = document.getElementById("navbar-login");
@@ -20,11 +22,14 @@ const btnLoginRegresar = document.getElementById("btn-login-regresar");
 const btnSubmitLogin = document.getElementById("btn-submit-login");
 const inputUsuario = document.getElementById("login-usuario");
 const inputPassword = document.getElementById("login-password");
-const loginError = document.getElementById("login-error");
+const loginErrorMsg = document.getElementById("login-error");
+
 
 // RANKING ---------------------
 const menuRanking = document.getElementById("menu-ranking");
 const btnRankingRegresar = document.getElementById("btn-ranking-regresar");
+const listaRanking = document.getElementById("lista-ranking");
+
 
 // TIENDA ----------------------
 const menuTienda = document.getElementById("menu-tienda");
@@ -41,10 +46,12 @@ const cantidadDatos = document.getElementById("cantidad-datos");
 
 let datosJugador = 2500;
 
+
 // NIVEL Y DIFICULTAD -----------
 const menuNiveles = document.getElementById("menu-niveles-single");
 const menuDificultad = document.getElementById("menu-dificultad");
 const btnDificultadRegresar = document.getElementById("btn-dificultad-regresar");
+
 
 let nivelSeleccionado = null;
 let dificultadSeleccionada = null;
@@ -63,6 +70,27 @@ const mensajeTransmision = document.getElementById("mensajeTransmision");
 const estadoTransmision = document.getElementById("estadoTransmision");
 
 const WEBHOOK_URL = "https://discord.com/api/webhooks/1427773296291745925/uD5ClVLf_UjT6zsZ5yXxtXIgPP58KN2OMgS9FH7jKQk-HCRdaFjV-c27wd88o6I73KGO";
+
+// SALIR -----------------------
+const btnSalir = document.getElementById("btn-salir");
+
+// REGISTRO --------------------
+const menuRegister = document.getElementById('menu-register');
+const btnShowRegister = document.getElementById('btn-show-register');
+const btnShowLogin = document.getElementById('btn-show-login');
+const btnSubmitRegister = document.getElementById('btn-submit-register');
+const registerUsuarioInput = document.getElementById('register-usuario');
+const registerPasswordInput = document.getElementById('register-password');
+const registerErrorMsg = document.getElementById('register-error');
+
+// Función para reproducir sonido de click (asumo que ya tienes una)
+function reproducirSonidoClick() {
+  const sonido = document.getElementById("sonido-btn_Click");
+  if (sonido) {
+    sonido.currentTime = 0;
+    sonido.play();
+  }
+}
 
 
 // =================================================================================================
@@ -134,6 +162,9 @@ function abrirLogin() {
   // Ocultamos el menú principal y mostramos el de login
   botonesMenu.forEach(btn => btn.classList.add("oculto"));
   menuLogin.classList.remove("oculto");
+  menuRegister.classList.add('oculto'); 
+  loginErrorMsg.textContent = '';
+  registerErrorMsg.textContent = '';
 }
 
 btnLoginRegresar.addEventListener("click", () => {
@@ -145,15 +176,15 @@ btnLoginRegresar.addEventListener("click", () => {
 btnSubmitLogin.addEventListener("click", async () => {
   const usuario = inputUsuario.value;
   const password = inputPassword.value;
-  loginError.textContent = ""; // Limpiar errores previos
+  loginErrorMsg.textContent = ""; // Limpiar errores previos
 
   if (!usuario || !password) {
-    loginError.textContent = "Usuario y contraseña son requeridos.";
+    loginErrorMsg.textContent = "Usuario y contraseña son requeridos.";
     return;
   }
 
-  loginError.textContent = "Conectando...";
-  loginError.style.color = "#00ffe0";
+  loginErrorMsg.textContent = "Conectando...";
+  loginErrorMsg.style.color = "#00ffe0";
 
   try {
     // Hacemos la petición a nuestro script PHP.
@@ -172,19 +203,19 @@ btnSubmitLogin.addEventListener("click", async () => {
       // La sesión ya está creada en el lado del servidor por login.php.
       // Simplemente recargamos la página. El servidor detectará la sesión activa
       // y renderizará la vista correcta (con el botón de "Cerrar Sesión").
-      loginError.textContent = "Login exitoso! Recargando...";
-      loginError.style.color = "#00ff9d";
+      loginErrorMsg.textContent = "Login exitoso! Recargando...";
+      loginErrorMsg.style.color = "#00ff9d";
       window.location.reload();
     } else {
       // El backend dijo que las credenciales son incorrectas
-      loginError.textContent = data.message || "Credenciales inválidas.";
-      loginError.style.color = "#ff8080";
+      loginErrorMsg.textContent = data.message || "Credenciales inválidas.";
+      loginErrorMsg.style.color = "#ff8080";
     }
 
   } catch (error) {
     // Esto ocurre si Apache no está corriendo o hay un problema de red/CORS.
-    loginError.textContent = "Error: No se pudo conectar con el servidor.";
-    loginError.style.color = "#ff8080";
+    loginErrorMsg.textContent = "Error: No se pudo conectar con el servidor.";
+    loginErrorMsg.style.color = "#ff8080";
     console.error("Error en el fetch:", error);
   }
 });
@@ -278,12 +309,47 @@ function cargarGlitchesDisponibles() {
 function abrirRanking() {
   document.querySelector(".menu").classList.add("oculto");
   menuRanking.classList.remove("oculto");
+  cargarRanking(); // Llamamos a la función para que cargue los datos
 }
 
 btnRankingRegresar.addEventListener("click", () => {
   menuRanking.classList.add("oculto");
   document.querySelector(".menu").classList.remove("oculto");
 });
+
+async function cargarRanking() {
+  listaRanking.innerHTML = '<li>Cargando ranking...</li>'; // Estado de carga
+
+  try {
+    const response = await fetch('get_ranking.php');
+    if (!response.ok) {
+      throw new Error('La respuesta del servidor no fue exitosa');
+    }
+    
+    const data = await response.json();
+
+    if (data.success && data.ranking) {
+      listaRanking.innerHTML = ''; // Limpiamos el mensaje de "cargando"
+      
+      if (data.ranking.length === 0) {
+        listaRanking.innerHTML = '<li>Aún no hay puntajes. ¡Sé el primero!</li>';
+        return;
+      }
+
+      data.ranking.forEach((player, index) => {
+        const li = document.createElement('li');
+        li.innerHTML = `<span>${index + 1}.</span> ${player.u_name} <span class="puntos">${player.max_score} pts</span>`;
+        listaRanking.appendChild(li);
+      });
+
+    } else {
+      throw new Error(data.message || 'No se pudo obtener el ranking.');
+    }
+  } catch (error) {
+    console.error('Error al cargar el ranking:', error);
+    listaRanking.innerHTML = '<li>Error al cargar el ranking. Inténtalo de nuevo.</li>';
+  }
+}
 
 
 // =================================================================================================
@@ -424,4 +490,89 @@ btnEnviarTransmision.addEventListener("click", async () => {
     estadoTransmision.textContent = "❌ Error de conexión";
     estadoTransmision.style.color = "#ff8080";
   }
+});
+
+// =================================================================================================
+// LÓGICA DE REGISTRO
+// =================================================================================================
+
+// Botón para mostrar el formulario de registro desde el de login
+btnShowRegister.addEventListener('click', (e) => {
+    e.preventDefault(); // Evita que el enlace recargue la página
+    reproducirSonidoClick();
+    menuLogin.classList.add('oculto');
+    menuRegister.classList.remove('oculto');
+    loginErrorMsg.textContent = ''; // Limpia errores del login
+});
+
+// Botón para volver al formulario de login desde el de registro
+btnShowLogin.addEventListener('click', (e) => {
+    e.preventDefault();
+    reproducirSonidoClick();
+    menuRegister.classList.add('oculto');
+    menuLogin.classList.remove('oculto');
+    registerErrorMsg.textContent = ''; // Limpia errores del registro
+});
+
+// Botón para enviar el formulario de registro
+btnSubmitRegister.addEventListener('click', async () => {
+    reproducirSonidoClick();
+    const usuario = registerUsuarioInput.value.trim();
+    const password = registerPasswordInput.value.trim();
+
+    if (!usuario || !password) {
+        registerErrorMsg.textContent = 'Ambos campos son obligatorios.';
+        return;
+    }
+
+    registerErrorMsg.textContent = ''; // Limpiar error previo
+
+    try {
+        const response = await fetch('register.php', { // Asegúrate que la URL sea correcta
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ usuario, password }),
+        });
+
+        const result = await response.json();
+
+        if (response.ok && result.success) {
+            // Registro exitoso, mostramos un mensaje y volvemos al login
+            alert('¡Registro exitoso! Ahora puedes iniciar sesión.');
+            menuRegister.classList.add('oculto');
+            menuLogin.classList.remove('oculto');
+            // Opcional: rellenar el campo de usuario en el login
+            document.getElementById('login-usuario').value = usuario;
+            document.getElementById('login-password').value = '';
+        } else {
+            // Mostrar error devuelto por el servidor (ej: "usuario ya existe")
+            registerErrorMsg.textContent = result.message || 'Error en el registro.';
+        }
+    } catch (error) {
+        console.error('Error en la petición de registro:', error);
+        registerErrorMsg.textContent = 'No se pudo conectar con el servidor. Inténtalo más tarde.';
+    }
+});
+
+// =================================================================================================
+// LÓGICA DE SALIDA
+// =================================================================================================
+
+btnSalir.addEventListener('click', () => {
+  reproducirSonidoClick();
+
+  // 1. Añadimos la clase que activa la animación de fundido a negro.
+  document.body.classList.add('fade-out-active');
+
+  // 2. Esperamos a que la animación termine (500ms) antes de actuar.
+  setTimeout(() => {
+    // 3. Intentamos cerrar la ventana.
+    window.close();
+
+    // 4. Como fallback, si no se cierra, redirigimos a una página en blanco.
+    // Esto da la sensación de que la aplicación ha terminado.
+    window.location.href = 'about:blank';
+  }, 3000); // 500ms, igual que la duración de la animación CSS.
 });

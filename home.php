@@ -46,7 +46,7 @@
           <button class="btn" onclick="abrirRanking()">Ranking</button>
           <button id="btnTransmisiones" class="btn">Transmisiones</button>
           <button class="btn" onclick="abrirOpciones()">Opciones</button>
-          <button class="btn salir" onclick="cerrarJuego()">Salir</button>
+          <button id="btn-salir" class="btn salir">Salir</button>
         </div>
       </div>
 
@@ -76,8 +76,24 @@
       </div>
       <p id="login-error" class="error-msg"></p>
       <button class="btn" id="btn-submit-login">Entrar</button>
-      <hr style="margin: 12px 0; border-color: #555;">
+      <hr style="margin: 10px 0; border-color: #555;">
+      <p style="font-size: 0.9rem; margin: 8px 0;">¿No tienes cuenta? <a href="#" id="btn-show-register" class="link-form">Regístrate</a></p>
       <button class="btn" id="btn-login-regresar">Regresar</button>
+    </div>
+
+    <!-- Contenedor de Registro -->
+    <div id="menu-register" class="menu-opciones oculto">
+      <h2>Crear Cuenta</h2>
+      <div class="opcion">
+        <input type="text" id="register-usuario" placeholder="Elige un usuario" class="input-login">
+      </div>
+      <div class="opcion">
+        <input type="password" id="register-password" placeholder="Crea una contraseña" class="input-login">
+      </div>
+      <p id="register-error" class="error-msg"></p>
+      <button class="btn" id="btn-submit-register">Registrarse</button>
+      <hr style="margin: 10px 0; border-color: #555;">
+      <p style="font-size: 0.9rem; margin: 8px 0;">¿Ya tienes cuenta? <a href="#" id="btn-show-login" class="link-form">Inicia Sesión</a></p>
     </div>
 
     <!-- Contenedor de selector de niveles SinglePlayer -->
@@ -126,12 +142,8 @@
     <!-- Contenedor de Ranking -->
     <div id="menu-ranking" class="menu-ranking oculto">
       <h2>Ranking</h2>
-      <ul id="lista-ranking">
-        <li>1. JugadorPro - 15000 pts</li>
-        <li>2. NeoRunner - 12340 pts</li>
-        <li>3. CyberX - 9870 pts</li>
-        <li>4. ByteMaster - 8650 pts</li>
-        <li>5. PixelHero - 7540 pts</li>
+      <ul id="lista-ranking" class="lista-ranking">
+        <!-- El contenido del ranking se cargará aquí dinámicamente -->
       </ul>
       <button class="btn" id="btn-ranking-regresar">Regresar</button>
     </div>
