@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 21-11-2025 a las 20:00:20
+-- Tiempo de generación: 21-11-2025 a las 23:02:27
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.0.30
 
@@ -22,6 +22,91 @@ SET time_zone = "+00:00";
 --
 CREATE DATABASE IF NOT EXISTS `gcw_cyber_run` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 USE `gcw_cyber_run`;
+
+DELIMITER $$
+--
+-- Procedimientos
+--
+DROP PROCEDURE IF EXISTS `comprar_buff`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `comprar_buff` (IN `p_id_user` INT, IN `p_id_buff` INT)   BEGIN
+    -- Declaración de variables para almacenar datos
+    DECLARE v_user_points INT;
+    DECLARE v_buff_price INT;
+    DECLARE v_buff_exists INT;
+
+    -- Obtener los puntos actuales del usuario
+    SELECT current_points INTO v_user_points FROM `users` WHERE id_user_PK = p_id_user;
+
+    -- Obtener el precio del buff
+    SELECT price INTO v_buff_price FROM `buffs` WHERE id_buff_PK = p_id_buff;
+
+    -- [MEJORA] Verificar si el usuario ya tiene el buff para evitar compras duplicadas
+    SELECT COUNT(*) INTO v_buff_exists FROM `users-buffs` WHERE id_user_FK = p_id_user AND id_buff_FK = p_id_buff;
+
+    -- [MEJORA] Iniciar transacción para asegurar la integridad de los datos
+    START TRANSACTION;
+
+    -- Lógica de la compra
+    IF v_buff_exists > 0 THEN
+        -- El usuario ya tiene el buff. Devolvemos un error y revertimos cualquier cambio.
+        SELECT FALSE AS success, 'Ya posees este glitch.' AS message;
+        ROLLBACK;
+    ELSEIF v_user_points >= v_buff_price THEN
+        -- El usuario tiene suficientes puntos, proceder con la compra
+        UPDATE users SET current_points = current_points - v_buff_price WHERE id_user_PK = p_id_user;
+        INSERT INTO `users-buffs` (id_user_FK, id_buff_FK) VALUES (p_id_user, p_id_buff);
+        COMMIT; -- Confirmar la transacción si todo fue bien
+        SELECT TRUE AS success, 'Compra realizada con éxito.' AS message;
+    ELSE
+        -- El usuario no tiene suficientes puntos. Devolvemos un error y revertimos.
+        SELECT FALSE AS success, 'No tienes suficientes datos para comprar este glitch.' AS message;
+        ROLLBACK;
+    END IF;
+END$$
+
+DROP PROCEDURE IF EXISTS `create_user`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `create_user` (IN `p_username` VARCHAR(50), IN `p_password` VARCHAR(255))   BEGIN
+    -- Declaramos una variable para verificar si el usuario ya existe
+    DECLARE user_exists INT;
+
+    -- Contamos cuántos usuarios existen con ese nombre
+    SELECT COUNT(*) INTO user_exists FROM `users` WHERE `u_name` = p_username;
+
+    -- Si no existe (conteo es 0), lo insertamos
+    IF user_exists = 0 THEN
+        INSERT INTO `users` (`u_name`, `u_password`, `current_points`)
+        VALUES (p_username, p_password, 0);
+        
+        -- Devolvemos un resultado de éxito
+        SELECT 1 AS success, 'Usuario registrado con éxito.' AS message;
+    ELSE
+        -- Si ya existe, devolvemos un mensaje de error
+        SELECT 0 AS success, 'El nombre de usuario ya está en uso.' AS message;
+    END IF;
+
+END$$
+
+DROP PROCEDURE IF EXISTS `update_user_score`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `update_user_score` (IN `p_id_user` INT, IN `p_points_scored` INT)   BEGIN
+    -- Iniciar una transacción para asegurar que todas las operaciones se completen con éxito.
+    START TRANSACTION;
+
+    -- 1. Sumar los puntos obtenidos a los puntos actuales del usuario.
+    UPDATE `users`
+    SET `current_points` = `current_points` + p_points_scored
+    WHERE `id_user_PK` = p_id_user;
+
+    -- 2. Actualizar el récord máximo (max_score) solo si la nueva puntuación es mayor
+    --    que el récord existente. Se usa COALESCE para tratar un récord NULL como 0.
+    UPDATE `users`
+    SET `max_score` = p_points_scored
+    WHERE `id_user_PK` = p_id_user AND p_points_scored > COALESCE(`max_score`, 0);
+
+    -- Confirmar todos los cambios en la base de datos.
+    COMMIT;
+END$$
+
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -49,6 +134,18 @@ INSERT INTO `buffs` VALUES(3, 'Reescritura del Código', 'Cuando mueres, tu cód
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `top_ranking`
+--
+
+DROP TABLE IF EXISTS `top_ranking`;
+CREATE TABLE `top_ranking` (
+  `ID_User_PK` int(11) NOT NULL,
+  `World_Top_Score` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `users`
 --
 
@@ -58,14 +155,15 @@ CREATE TABLE `users` (
   `u_password` varchar(30) NOT NULL,
   `u_name` varchar(30) NOT NULL,
   `current_points` int(11) NOT NULL,
-  `points_record` int(11) NOT NULL
+  `max_score` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `users`
 --
 
-INSERT INTO `users` VALUES(1, '5545', 'DrippKing', 1000, 850);
+INSERT INTO `users` VALUES(1, '5545', 'DrippKing', 2182, 2500);
+INSERT INTO `users` VALUES(3, '1234', 'CigarroPoderoso', 241, 327);
 
 -- --------------------------------------------------------
 
@@ -78,6 +176,15 @@ CREATE TABLE `users-buffs` (
   `id_user_FK` int(11) NOT NULL,
   `id_buff_FK` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `users-buffs`
+--
+
+INSERT INTO `users-buffs` VALUES(1, 1);
+INSERT INTO `users-buffs` VALUES(1, 3);
+INSERT INTO `users-buffs` VALUES(3, 2);
+INSERT INTO `users-buffs` VALUES(1, 2);
 
 --
 -- Índices para tablas volcadas
@@ -109,7 +216,7 @@ ALTER TABLE `buffs`
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id_user_PK` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_user_PK` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
